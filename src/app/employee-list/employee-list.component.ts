@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {EmployeeServiceService} from "../service/employee-service.service";
 import {EmployeeList} from "./employee-list";
 import {NavigationExtras, Router} from "@angular/router";
-import {Skills} from "./skills";
+
 declare var $: any;
 
 @Component({
