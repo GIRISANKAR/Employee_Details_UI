@@ -1,0 +1,42 @@
+<!--<mat-grid-list cols="4" >
+  <mat-grid-tile
+    *ngFor="let tile of tiles"
+    [colspan]="tile.cols"
+    [rowspan]="tile.rows"
+    [style.background]="tile.color">
+    {{tile.text}}
+  </mat-grid-tile>
+</mat-grid-list>&ndash;&gt;-->
+
+<mat-toolbar class="header">
+  <table style="width:100%">
+    <col align="left">
+    <col align="right">
+  <tr>
+    <td><img src="assets/images/htclogo.png" width="185px" height="150px"></td>
+    <td><span ><b>Employee Details</b></span></td>
+  </tr>
+  </table>
+</mat-toolbar>
+
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" class="widthContainer"opened>
+    <nav class="m-2" style="margin-top:10rem">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+      <b><a routerLink="home" routerLinkActive="active">Home</a></b>
+     </nav>
+    <nav class="m-2">
+      <mat-icon>account_circle</mat-icon>
+      <b><a routerLink="employeeDetails" routerLinkActive="active">Add Employee</a></b></nav>
+    <nav class="m-2">
+      <mat-icon>search</mat-icon>
+      <b><a routerLink="search" routerLinkActive="active">Search</a></b></nav>
+  </mat-drawer>
+  <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
+</mat-drawer-container>
+
+
+
+<!--
+<router-outlet></router-outlet>
+-->

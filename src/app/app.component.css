@@ -1,0 +1,32 @@
+.example-container {
+  width: 100%;
+  height: 100%;
+  margin: 5px;
+
+}
+
+.widthContainer{
+  width: 13%;
+  overflow: hidden;
+  background-color: #B0C1D9;
+
+}
+
+.header{
+  width: 100%;
+  height: 10%;
+  background-color: #B0C1D9;
+
+}
+span{
+  font-size: xx-large;
+  font-family:"URW Bookman L" ;
+}
+a{
+  color: black;
+
+}
+.p{
+  align: center;
+}
+

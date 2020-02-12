@@ -1,0 +1,134 @@
+<h3><span class="m-2">Employee's List</span></h3>
+
+<div  align="right">
+ <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
+         id="iconified" placeholder= "Start searching for a Employee &#xf0e0;">
+  <!--<input  type="search" id="sampleSearchInput" [(ngModel)]="searchText"><i class="material-icons">search</i>-->
+</div>
+
+<div class="row ml-1">
+  <table class="table table-bordered table-striped table-responsive">
+    <thead>
+    <tr>
+      <th>Employee Id</th>
+      <th>Employee Name</th>
+      <th>Designation</th>
+      <th>Primary WorkLocation</th>
+      <th>Official EmailAddr</th>
+      <th>Extn Number</th>
+      <th>Mobile Number</th>
+      <th>HTC Experience</th>
+      <th>Total Experience</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let employee of employeeList | filter:searchText">
+    <tr>
+      <td (click)="toggleModel(employee)">{{employee.empId}}</td>
+      <td>{{employee.empName}}</td>
+      <td>{{employee.designation}}</td>
+      <td>{{employee.primaryWorkLocation}}</td>
+      <td>{{employee.officialEmailAddr}}</td>
+      <td>{{employee.extensionNumber}}</td>
+      <td>{{employee.mobileNumber}}</td>
+      <td>{{employee.htcExperience}}</td>
+      <td>{{employee.overallExperience}}</td>
+      <div ng-include="'employee.component.html'">
+        <td>
+          <button class='btn btn-primary' (click)="editEmployee(employee)"><i class="fa fa-futboll-0">Edit</i></button>
+        </td>
+      </div>
+      <td>
+        <button (click)="deleteEmployee(employee)" class='btn btn-primary'><i class="fa fa-futboll-0">Delete</i>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!--list of skills & projects displaying-->
+
+  <div class="modal" id="myModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">
+            {{employeObject.empName}}
+          </h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <b>Skills</b>
+          <table class="table table-bordered table-striped table-responsive">
+            <tr>
+              <th>SkillName</th>
+              <th>Experience</th>
+            </tr>
+            <tbody *ngFor="let skill of employeObject.skills">
+            <tr>
+              <td>{{skill.skillName}}</td>
+              <td>{{skill.experience}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <b>Projects</b>
+          <table class="table table-bordered table-striped table-responsive">
+            <tr>
+              <th>ProjectName</th>
+              <th>Reporting To</th>
+              <th>Delivery Head</th>
+            </tr>
+            <tbody *ngFor="let project of employeObject.projects">
+            <tr>
+              <td>{{project.projectName}}</td>
+              <td>{{project.reportingTo}}</td>
+              <td>{{project.deliveryHead}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="modal" id="delete" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Do you want to delete Employee from list?</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
