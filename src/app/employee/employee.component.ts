@@ -12,6 +12,7 @@ import {Location} from "@angular/common";
 export class EmployeeComponent implements OnInit {
 
   disabled = false;
+  panelOpenState = false;
   addEmployeeForm: FormGroup;
   submitted = false;
 
