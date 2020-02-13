@@ -9,13 +9,12 @@ import {HttpParams} from "@angular/common/http";
   providedIn: 'root'
 })
 export class EmployeeServiceService {
-  private baseUrl = 'http://localhost:9090';
+  private baseUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {
   }
 
   addEmployee(employee): Observable<object> {
-     alert(JSON.stringify(employee));
     return this.http.post(this.baseUrl + "/addEmployee/", employee,
       {headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }

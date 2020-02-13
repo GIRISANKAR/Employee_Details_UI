@@ -14,10 +14,12 @@
 .form-control {
   box-shadow: 0 10px 40px 0 #B0C1D9;
   align:"right";
-  width:300px;
+  width:250px;
   font-family: 'Helvetica', FontAwesome, sans-serif;
 
 }
-/*.form-control::placeholder  {
-  font-family: FontAwesome;
-}*/
+
+.delete{
+  width: 20px;
+  height: 10px;
+}

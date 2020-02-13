@@ -13,8 +13,7 @@ declare var $: any;
 })
 export class EmployeeListComponent implements OnInit {
   employeeList: Observable<EmployeeList[]>;
-  skills: Observable<Skills[]>;
-  employeObject= {};
+  employeeObject= {};
   searchText;
 
   constructor(private employeeService: EmployeeServiceService, private router : Router) {
@@ -25,7 +24,7 @@ export class EmployeeListComponent implements OnInit {
     });
   }
   toggleModel(employee){
-    this.employeObject = employee;
+    this.employeeObject = employee;
     $("#myModal").modal("show")
   }
   editEmployee(employee){
@@ -38,11 +37,14 @@ export class EmployeeListComponent implements OnInit {
   }
   deleteEmployee(employee){
     this.employeeService.deleteEmployee(employee.empId).subscribe(data=>{
-      $("#delete").modal("show");
-
+      this.getEmployeeList();
     });
-  }
 
+  }
+  deleteModel(employee){
+    this.employeeObject = employee;
+    $("#delete").modal("show")
+  }
   ngOnInit() {
     this.getEmployeeList();
   }

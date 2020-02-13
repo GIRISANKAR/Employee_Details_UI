@@ -10,13 +10,10 @@ import {Location} from "@angular/common";
   styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit {
-   disabled = false;
-  // @ViewChild('addEmployeeForm' , {static: true}) formValues;
-  //employee: employee = new employee();
+
+  disabled = false;
   addEmployeeForm: FormGroup;
   submitted = false;
-
-
 
   constructor(public fb: FormBuilder,private employeeService: EmployeeServiceService,private activatedRoute: ActivatedRoute,private  route:Router,
   private location: Location){
@@ -66,31 +63,28 @@ export class EmployeeComponent implements OnInit {
   reactiveForm() {
     this.addEmployeeForm = this.fb.group({
       empId: ['',Validators.required],
-      empName: ['',Validators.required],
+      empName: ['',[Validators.required,Validators.maxLength(100)]],
       designation: ['',Validators.required],
       primaryWorkLocation: ['',Validators.required],
       htcExperience: ['',Validators.required],
       overallExperience: ['',Validators.required],
-      personalDetailsId: ['',{value: '',disabled:true}],
+      personalDetailsId: [''],
       officialEmailAddr: ['',[Validators.required,Validators.email]],
       emailAddr: ['',[Validators.required,Validators.email]],
       extensionNumber: ['',Validators.required],
-      mobileNumber: [null,Validators.required],
+      mobileNumber: [null,[Validators.required,Validators.minLength(10),Validators.maxLength(10)]],
       addressId: [''],
       addressLine: ['',Validators.required],
       city: ['',Validators.required],
       state: ['',Validators.required],
       country: ['',Validators.required],
-      pincode: [null,Validators.required],
+      pincode: [null,[Validators.required,Validators.maxLength(6),Validators.minLength(6)]],
       skills: this.fb.array([this.newSkill()]),
       projects: this.fb.array([this.newProject()]),
 
     })
   }
 
-/*  clear(){
-    this.addEmployeeForm.reset();
-  }*/
 
   get fval() {
     return this.addEmployeeForm.controls;
@@ -120,7 +114,7 @@ export class EmployeeComponent implements OnInit {
 
   removeSkill(i:number) {
     this.skillsArray().removeAt(i);
-  }
+ }
 
   projectsArray(): FormArray {
     return this.addEmployeeForm.get('projects') as FormArray;
@@ -153,25 +147,18 @@ export class EmployeeComponent implements OnInit {
   onSubmit(addEmployee) {
     this.submitted = true;
     if (this.addEmployeeForm.invalid) {
-    //  this.addEmployeeForm.reset();
+     this.addEmployeeForm.reset();
       return;
     }
     this.employeeService.addEmployee(this.addEmployeeForm.value)
       .subscribe(data => {
-        this.route.navigate(['/employeeDetails']);
         console.log(data);
-        alert('Saved successfully!');
-        addEmployee.reset();
-      }, error => {
-        console.log(error)
-        addEmployee.reload();
+
       });
-
+    alert("Saved Successfully");
+    //this.addEmployeeForm;
+    addEmployee.reset();
   }
-
-reload(): void{
-    this.route.navigateByUrl("/employeeDetails");
-}
   countrySelect(event){
     this.addEmployeeForm.patchValue({
       country: event.name
