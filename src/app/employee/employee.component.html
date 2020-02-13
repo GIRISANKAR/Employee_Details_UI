@@ -15,6 +15,9 @@
                     <div *ngIf="fval.empId.errors.required">
                         Employee Id is required
                     </div>
+                    <div *ngIf="fval.empId.errors.pattern">
+                        Employee Id must be a number.
+                    </div>
                 </div>
             </mat-form-field>
             &nbsp;
@@ -185,7 +188,7 @@
                     <div [formGroupName]="i">
                         <mat-form-field>
                             <mat-label>Project Name</mat-label>
-                            <mat-select matNativeControl required formControlName="projectName" class="form-control">
+                            <mat-select matNativeControl formControlName="projectName" class="form-control">
                                 <mat-option value="NahoForms">NahoForms</mat-option>
                                 <mat-option value="TheGeneral">TheGeneral</mat-option>
                                 <mat-option value="Recap"> Recap</mat-option>
@@ -195,12 +198,12 @@
                         </mat-form-field>
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <mat-form-field>
-                            <input matInput placeholder="Reporting To " required formControlName="reportingTo"
+                            <input matInput placeholder="Reporting To " formControlName="reportingTo"
                                    class="form-control"/>
                         </mat-form-field>
                         &nbsp;
                         <mat-form-field>
-                            <input matInput placeholder="Delivery Head" required formControlName="deliveryHead"
+                            <input matInput placeholder="Delivery Head" formControlName="deliveryHead"
                                    class="form-control"/>
                         </mat-form-field>
                         &nbsp;&nbsp;
@@ -222,7 +225,7 @@
                         <div [formGroupName]="i">
                             <mat-form-field>
                                 <mat-label>Skill Name</mat-label>
-                                <mat-select matNativeControl required formControlName="skillName" class="form-control">
+                                <mat-select matNativeControl formControlName="skillName" class="form-control">
                                     <mat-option value="select">Select</mat-option>
                                     <mat-option value="Java">Java</mat-option>
                                     <mat-option value="SQL">SQL</mat-option>
@@ -235,7 +238,7 @@
 
                             <mat-form-field>
                                 <mat-label>Experience</mat-label>
-                                <input matInput required formControlName="experience" class="form-control"/>
+                                <input matInput formControlName="experience" class="form-control"/>
                             </mat-form-field>
                             &nbsp; &nbsp;
                             <button (click)="removeSkill(i)">Remove</button>

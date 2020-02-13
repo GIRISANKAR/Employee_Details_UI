@@ -23,3 +23,11 @@
   width: 20px;
   height: 10px;
 }
+
+.id{
+    color: blue;
+}
+
+.header{
+    font-family: 'Helvetica', FontAwesome, sans-serif;
+}

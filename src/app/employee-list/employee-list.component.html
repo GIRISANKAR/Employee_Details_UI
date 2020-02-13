@@ -8,14 +8,14 @@
 <div class="row ml-1">
 
   <table class="table table-bordered table-striped table-responsive">
-    <thead>
+    <thead class="header">
     <tr>
-      <th> </th>
+      <th><mat-icon (click)="employeeDetails">add</mat-icon> </th>
       <th>Employee Id</th>
       <th>Employee Name</th>
       <th>Designation</th>
-      <th>Primary WorkLocation</th>
-      <th>Official EmailAddr</th>
+      <th>Location</th>
+      <th>Official EmailAddress</th>
       <th>Extn Number</th>
       <th>Mobile Number</th>
       <th>HTC Experience</th>
@@ -29,7 +29,7 @@
           <mat-icon (click)="editEmployee(employee)">edit</mat-icon>
         </td>
       </div>
-      <td (click)="toggleModel(employee)">{{employee.empId}}</td>
+      <td class="id" (click)="toggleModel(employee)">{{employee.empId}}</td>
       <td>{{employee.empName}}</td>
       <td>{{employee.designation}}</td>
       <td>{{employee.primaryWorkLocation}}</td>

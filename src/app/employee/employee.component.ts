@@ -62,7 +62,7 @@ export class EmployeeComponent implements OnInit {
 }
   reactiveForm() {
     this.addEmployeeForm = this.fb.group({
-      empId: ['',Validators.required],
+      empId: ['',[Validators.required,Validators.pattern("[0-9]")]],
       empName: ['',[Validators.required,Validators.maxLength(100)]],
       designation: ['',Validators.required],
       primaryWorkLocation: ['',Validators.required],
