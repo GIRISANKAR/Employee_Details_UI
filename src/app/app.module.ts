@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatMenuModule, MatExpansionModule, MatFormFieldModule,
   MatIconModule, MatSidenavModule, MatInputModule, MatDatepickerModule, MatRadioModule, MatNativeDateModule,
-  MatListModule, MatDividerModule, MatSelectModule, MatOptionModule, MatToolbarModule
+  MatListModule, MatDividerModule, MatSelectModule, MatOptionModule, MatToolbarModule, MatCheckboxModule, MatTableModule
 } from "@angular/material";
 import {HttpClientModule} from "@angular/common/http";
 import { HomeComponent } from './home/home.component';
@@ -48,7 +48,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     MatOptionModule,
     MatSelectCountryModule,
     Ng2SearchPipeModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatCheckboxModule,
+      MatTableModule,
 
 ],
   providers: [],

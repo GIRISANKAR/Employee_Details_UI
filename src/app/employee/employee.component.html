@@ -125,7 +125,20 @@
                     </div>
                 </div>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;
+            &nbsp;
+            <mat-form-field>
+                <input matInput placeholder=" Alternative Mobile Number "formControlName="alternativeMobileNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.alternativeMobileNumber.errors }"/>
+                <div *ngIf="submitted && fval.alternativeMobileNumber.errors" class="alert alert-danger">
+
+                    <div *ngIf="fval.alternativeMobileNumber.errors.minLength">
+                        Mobile number should be 10 digit number
+                    </div>
+                    <div *ngIf="fval.alternativeMobileNumber.errors.maxLength">
+                        Mobile number should be 10 digit number
+                    </div>
+                </div>
+            </mat-form-field>
+            &nbsp;
             <mat-panel-title>
                 Address
             </mat-panel-title>
@@ -207,7 +220,20 @@
                             <input matInput placeholder="Delivery Head" formControlName="deliveryHead"
                                    class="form-control"/>
                         </mat-form-field>
-                        &nbsp;&nbsp;
+                        &nbsp;
+                            <mat-form-field>
+                                <input matInput placeholder="Project Location " formControlName="projectLocation"
+                                       class="form-control"/>
+                            </mat-form-field>
+                        &nbsp;
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Project Description</mat-label>
+                            <textarea matInput placeholder="..." formControlName="projectDescription"
+                                      class="form-control"></textarea>
+                        </mat-form-field>
+                        &nbsp;
+                        <mat-checkbox formControlName="projectLocation">Active</mat-checkbox>
+                        &nbsp;
                         <button (click)="removeProject(i)">Remove</button>
                     </div>
                 </div>

@@ -36,6 +36,7 @@ export class EmployeeComponent implements OnInit {
             emailAddr: emp.emailAddr,
             extensionNumber: emp.extensionNumber,
             mobileNumber: emp.mobileNumber,
+              alternativeMobileNumber: emp.alternativeMobileNumber,
             addressId: emp.addressId,
             addressLine: emp.addressLine,
             city: emp.city,
@@ -74,6 +75,7 @@ export class EmployeeComponent implements OnInit {
       emailAddr: ['',[Validators.required,Validators.email]],
       extensionNumber: ['',Validators.required],
       mobileNumber: [null,[Validators.required,Validators.minLength(10),Validators.maxLength(10)]],
+        alternativeMobileNumber:[null,[Validators.minLength(10),Validators.maxLength(10)]],
       addressId: [''],
       addressLine: ['',Validators.required],
       city: ['',Validators.required],
@@ -127,7 +129,9 @@ export class EmployeeComponent implements OnInit {
       projectId: [''],
       projectName: [''],
       reportingTo: [''],
-      deliveryHead: ['']
+      deliveryHead: [''],
+        projectLocation:[''],
+        projectDescription:['']
     })
   }
   bindProject(project): FormGroup {
@@ -135,7 +139,9 @@ export class EmployeeComponent implements OnInit {
       projectId: [project.projectId],
       projectName: [project.projectName],
       reportingTo: [project.reportingTo],
-      deliveryHead:[project.deliveryHead]
+      deliveryHead:[project.deliveryHead],
+        projectLocation:[project.projectLocation],
+        projectDescription:[project.projectDescription]
     })
   }
   addProject() {
