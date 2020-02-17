@@ -221,11 +221,37 @@
                                    class="form-control"/>
                         </mat-form-field>
                         &nbsp;
-                            <mat-form-field>
-                                <input matInput placeholder="Project Location " formControlName="projectLocation"
-                                       class="form-control"/>
-                            </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Start date</mat-label>
+                            <input matInput [matDatepicker]="picker1">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1 startView="year" [startAt]="startDate"></mat-datepicker>
+                        </mat-form-field>
                         &nbsp;
+                        <mat-form-field>
+                            <mat-label>End date</mat-label>
+                            <input matInput [matDatepicker]="picker2">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2 startView="year" [startAt]="endDate"></mat-datepicker>
+                        </mat-form-field>
+                        &nbsp;
+                        <mat-form-field>
+                            <mat-label>Location</mat-label>
+                            <mat-select matNativeControl required formControlName="projectLocation" class="form-control">
+                                <mat-option value="Mepz">Mepz</mat-option>
+                                <mat-option value="Guindy">Guindy</mat-option>
+                                <mat-option value="HTCHyderabad"> HTCHyderabad</mat-option>
+                                <mat-option value="Ciber">Ciber</mat-option>
+                                <mat-option value="Client">Client</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        &nbsp;
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Skill Set</mat-label>
+                            <textarea matInput placeholder="..." formControlName="skillSet"
+                                      class="form-control"></textarea>
+                        </mat-form-field>
                         <mat-form-field class="example-full-width">
                             <mat-label>Project Description</mat-label>
                             <textarea matInput placeholder="..." formControlName="projectDescription"

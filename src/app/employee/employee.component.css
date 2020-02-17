@@ -8,3 +8,6 @@
 .example-full-width {
   width: 30%;
 }
+mat-form-field {
+  margin-right: 12px;
+}

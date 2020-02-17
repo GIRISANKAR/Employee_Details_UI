@@ -15,7 +15,8 @@ export class EmployeeComponent implements OnInit {
   panelOpenState = false;
   addEmployeeForm: FormGroup;
   submitted = false;
-
+  startDate = new Date();
+  endDate = new Date();
   constructor(public fb: FormBuilder,private employeeService: EmployeeServiceService,private activatedRoute: ActivatedRoute,private  route:Router,
   private location: Location){
 
@@ -131,6 +132,9 @@ export class EmployeeComponent implements OnInit {
       reportingTo: [''],
       deliveryHead: [''],
         projectLocation:[''],
+        startDate:[''],
+        endDate:[''],
+        skillSet:[''],
         projectDescription:['']
     })
   }
@@ -141,6 +145,9 @@ export class EmployeeComponent implements OnInit {
       reportingTo: [project.reportingTo],
       deliveryHead:[project.deliveryHead],
         projectLocation:[project.projectLocation],
+        startDate:[project.startDate],
+        endDate:[project.endDate],
+        skillSet:[project.skillSet],
         projectDescription:[project.projectDescription]
     })
   }

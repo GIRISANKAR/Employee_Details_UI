@@ -11,6 +11,9 @@ const routes: Routes = [
   { path: 'employeeDetails', component: EmployeeComponent},
   {path: 'search', component: EmployeeListComponent},
   {path:'**', component: HomeComponent},
+  { path: '', pathMatch: 'full', redirectTo: 'login'},
+  { path: 'login', component: LoginComponent },
+  { path: 'admin', component: AdminComponent }
 ];
 
 @NgModule({

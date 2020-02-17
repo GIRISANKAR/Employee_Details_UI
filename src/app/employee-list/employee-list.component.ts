@@ -23,7 +23,14 @@ export class EmployeeListComponent implements OnInit {
   constructor(private employeeService: EmployeeServiceService, private router: Router) {
   }
 
-  getEmployeeList() {
+  /*applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+*/
+
+getEmployeeList() {
     this.employeeService.getEmployeeList().subscribe(data => {
       this.employeeList = data;
     });
