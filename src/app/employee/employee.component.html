@@ -278,14 +278,10 @@
                         <div [formGroupName]="i">
                             <mat-form-field>
                                 <mat-label>Skill Name</mat-label>
-                                <mat-select matNativeControl formControlName="skillName" class="form-control">
-                                    <mat-option value="select">Select</mat-option>
-                                    <mat-option value="Java">Java</mat-option>
-                                    <mat-option value="SQL">SQL</mat-option>
-                                    <mat-option value="SpringBoot"> Spring Boot</mat-option>
-                                    <mat-option value="Hibernate">Hibernate</mat-option>
-                                    <mat-option value="Angular">Angular</mat-option>
-                                </mat-select>
+                                <mat-select class="selectpicker dropdown mt-4 ml-3" id="type" data-live-search="true" formControlName="skillname" class="form-control">
+                                <option *ngFor="let skill of skills" value={{skill}}>{{skill.skillName}}</option>
+                            </mat-select>
+
                             </mat-form-field>
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 

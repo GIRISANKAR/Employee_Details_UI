@@ -178,6 +178,14 @@ export class EmployeeComponent implements OnInit {
       country: event.name
     });
   }
+
+  getSkillSetNames(skills){
+
+    this.employeeService.getSkillNames(skills).subscribe(data => {
+    console.log(this.getSkillSetNames(skills));
+    });
+
+  }
 }
 
 

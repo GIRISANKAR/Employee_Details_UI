@@ -3,3 +3,8 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .modal-backdrop {z-index : -1}
+
+body {
+    background: #456;
+    font-family: 'Open Sans', sans-serif;
+}
