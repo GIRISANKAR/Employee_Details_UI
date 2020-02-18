@@ -30,9 +30,8 @@ export class EmployeeServiceService {
     return this.http.post(this.baseUrl + "/deleteEmployee/", params);
   }
 
-  getSkillNames(skills): Observable<object> {
-    let paramName = new HttpParams().set('paramName',skills);
-    return this.http.get(`${this.baseUrl}/getSkillNames?paramName`);
+  getSkillNames(): Observable<object> {
+    return this.http.get(`${this.baseUrl}/getSkillNames?paramName=skills`);
   }
 
 }
