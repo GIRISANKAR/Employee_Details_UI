@@ -1,10 +1,11 @@
 
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Observable} from "rxjs";
 import {EmployeeServiceService} from "../service/employee-service.service";
 import {EmployeeList} from "./employee-list";
 import {NavigationExtras, Router} from "@angular/router";
 import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator, MatSort} from "@angular/material";
 
 declare var $: any;
 
@@ -13,12 +14,14 @@ declare var $: any;
   templateUrl: './material-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
-export class EmployeeListComponent implements OnInit {
+export class EmployeeListComponent implements OnInit, AfterViewInit  {
   employeeList = new MatTableDataSource<EmployeeListComponent>();
   employeeObject: any[];
 
   displayedColumns: string[] = ['empId','empName','primaryWorkLocation','update', 'delete'];
   //dataSource = new MatTableDataSource<EmployeeListComponent>();
+ paginator: MatPaginator;
+ sort: MatSort;
 
   constructor(private employeeService: EmployeeServiceService, private router: Router) {
   }
@@ -69,7 +72,40 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit() {
     this.getEmployeeList();
+    this.generateTable(this.employeeList);
+
   }
+
+
+ngAfterViewInit(): void {
+  this.employeeList.sort = this.sort;
+this.employeeList.paginator = this.paginator;
+}
+
+/*applyColumnFilter() {
+
+    this.employeeList.filterPredicate = function (data, filter: string): boolean {
+        return data.empId.toLowerCase().includes(filter) || data.empName.toLowerCase().includes(filter) || data.primaryWorkLocation.toString().includes(filter);
+    };
+}*/
+    generateTable(tableData: any) {
+        this.employeeList = new MatTableDataSource(tableData);
+        this.employeeList.paginator = this.paginator;
+        this.employeeList.sort = this.sort;
+        this.employeeList.filterPredicate = (data: any, filter: string) => {
+            console.log(data);
+            console.log(filter);
+            let matchFound = false;
+            for (let column of this.displayedColumns) {
+                if(column in data) {
+                    if(data[column]) {
+                        matchFound = (matchFound || data[column].toString().trim().toLowerCase().indexOf(filter.trim().toLowerCase()) !== -1)
+                    }
+                }
+            }
+            return matchFound;
+        }
+    }
 }
 
 

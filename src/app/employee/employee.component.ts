@@ -69,6 +69,7 @@ export class EmployeeComponent implements OnInit {
 
   }
 
+
   reactiveForm() {
     this.addEmployeeForm = this.fb.group({
       empId: ['', [Validators.required]],
@@ -181,6 +182,7 @@ export class EmployeeComponent implements OnInit {
       return;
     }
     this.employeeService.addEmployee(this.addEmployeeForm.value)
+        .pipe(this.filterEmptyFields)
         .subscribe(data => {
           console.log(data);
 
@@ -189,6 +191,19 @@ export class EmployeeComponent implements OnInit {
     //this.addEmployeeForm;
     addEmployee.reset();
   }
+  filterEmptyFields(data: any): any {    // Filter any fields that aren't empty & store in a new object - To be passed on the Pipe map's caller
+    let fields = {};
+    Object.keys(data).forEach(key =>  data[key] != '' ? fields[key] = data[key] : key);
+
+    return fields;
+  }
+/*
+  trackEmptyFields(): void {
+    this.form
+        .valueChanges
+        .pipe(map(this.filterEmptyFields))
+        .subscribe(fields => console.log(fields));
+  }*/
 
   countrySelect(event) {
     this.addEmployeeForm.patchValue({
