@@ -19,6 +19,7 @@ export class EmployeeComponent implements OnInit {
   startDate = new Date();
   endDate = new Date();
   skillNames: Skill[];
+  paramName:string;
 
   constructor(public fb: FormBuilder, private employeeService: EmployeeServiceService, private activatedRoute: ActivatedRoute, private  route: Router,
               private location: Location) {
@@ -70,7 +71,7 @@ export class EmployeeComponent implements OnInit {
 
   reactiveForm() {
     this.addEmployeeForm = this.fb.group({
-      empId: ['', [Validators.required, Validators.pattern("[0-9]")]],
+      empId: ['', [Validators.required]],
       empName: ['', [Validators.required, Validators.maxLength(100)]],
       designation: ['', Validators.required],
       primaryWorkLocation: ['', Validators.required],
@@ -193,11 +194,11 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  getSkillSetNames() {
+  getSkillSetNames() : void{
 
-    this.employeeService.getSkillNames().subscribe(data => {
-      this.skillNames = data;
-    });
+    this.employeeService.getSkillNames(this.paramName).subscribe(data =>{
+        //this.skillNames = data;
+    } );
   }
 }
 

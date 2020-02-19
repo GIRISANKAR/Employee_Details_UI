@@ -12,6 +12,7 @@ export class AdminComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+
   }
 
   logout(){

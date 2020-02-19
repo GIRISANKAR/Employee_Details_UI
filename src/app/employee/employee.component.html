@@ -238,7 +238,7 @@
                         &nbsp;
                         <mat-form-field>
                             <mat-label>Location</mat-label>
-                            <mat-select matNativeControl required formControlName="projectLocation" class="form-control">
+                            <mat-select matNativeControl  formControlName="projectLocation" class="form-control">
                                 <mat-option value="Mepz">Mepz</mat-option>
                                 <mat-option value="Guindy">Guindy</mat-option>
                                 <mat-option value="HTCHyderabad"> HTCHyderabad</mat-option>
@@ -278,7 +278,7 @@
                         <div [formGroupName]="i">
                             <mat-form-field>
                                 <mat-label>Skill Name</mat-label>
-                                <mat-select  [formControl]="addEmployeeForm.controls[skillId]">
+                                <mat-select matNativeControl  formControlName="skillName" class="form-control" >
                                     <mat-option value="0">--Select--</mat-option>
                                     <mat-option *ngFor="let skill of skillNames"
                                             value={{skill.skillId}}>

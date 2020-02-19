@@ -11,6 +11,7 @@ import {HttpParams} from "@angular/common/http";
 export class EmployeeServiceService {
   private baseUrl = 'http://localhost:8080';
 
+  paramName="skills";
   constructor(private http: HttpClient) {
   }
 
@@ -30,8 +31,11 @@ export class EmployeeServiceService {
     return this.http.post(this.baseUrl + "/deleteEmployee/", params);
   }
 
-  getSkillNames(): Observable<object> {
+  /*getSkillNames(): Observable<object> {
     return this.http.get(`${this.baseUrl}/getSkillNames?paramName=skills`);
-  }
+  }*/
 
+  getSkillNames(paramName): Observable<object> {
+    return this.http.get(`${this.baseUrl}/getSkillNames/${this.paramName}`)
+  }
 }

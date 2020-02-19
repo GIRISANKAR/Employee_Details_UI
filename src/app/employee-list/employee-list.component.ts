@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {EmployeeServiceService} from "../service/employee-service.service";
 import {EmployeeList} from "./employee-list";
 import {NavigationExtras, Router} from "@angular/router";
-import {MatTableDataSource} from "@angular/material";
+import {MatTableDataSource} from "@angular/material/table";
 
 declare var $: any;
 
@@ -17,31 +17,20 @@ export class EmployeeListComponent implements OnInit {
   employeeList = new MatTableDataSource<EmployeeListComponent>();
   employeeObject: any[];
 
-  displayedColumns: string[] = ['empId', 'empName', 'designation', 'primaryWorkLocation','overallExperience'];
+  displayedColumns: string[] = ['empId','empName','primaryWorkLocation','update', 'delete'];
   //dataSource = new MatTableDataSource<EmployeeListComponent>();
 
   constructor(private employeeService: EmployeeServiceService, private router: Router) {
   }
 
- /* applyFilter(filterValue: string) {
-    let filter = {
-      empId: filterValue.trim().toLowerCase(),
-      empName: filterValue.trim().toLowerCase(),
-      topFilter: true
-    }
-    this.employeeList.filter = JSON.stringify(filter)
+  doFilter = (value: string) => {
+    this.employeeList.filter = value.trim().toLocaleLowerCase();
   }
-*/
 
-  applyFilter(filterValue: string, column) {
-    empId : filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.employeeList.filter = filterValue;
-  }
 
   getEmployeeList() {
     this.employeeService.getEmployeeList().subscribe(data => {
-      this.employeeList = data;
+      this.employeeList.data = data;
     });
   }
   toggleModel(employee) {
@@ -70,18 +59,32 @@ export class EmployeeListComponent implements OnInit {
     $("#delete").modal("show")
   }
 
+  public redirectToUpdate = (id: string) => {
+
+  }
+
+  public redirectToDelete = (id: string) => {
+
+  }
+
   ngOnInit() {
     this.getEmployeeList();
-  /*  this.employeeList.filterPredicate =
-        (data: EmployeeListComponent, filtersJson: string) => {
-          const matchFilter = [];
-          const filters = JSON.parse(filtersJson);
-
-          filters.forEach(filter => {
-            const val = data[filter.id] === null ? '' : data[filter.id];
-            matchFilter.push(val.toLowerCase().includes(filter.value.toLowerCase()));
-          });
-          return matchFilter.every(Boolean);
-        };*/
   }
 }
+
+
+/*
+applyFilter(filterValue: string, column) {
+  filterValue : filterValue.trim(); // Remove whitespace
+  filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+  let filtersJson = {id:column,value:filterValue}
+  this.employeeList.filterPredicate = (data: EmployeeListComponent, filtersJson: string) => {
+    const matchFilter = [];
+    const filters = JSON.parse(filtersJson);
+    const val = data[filters.id] === null ? '' : data[filters.id];
+    matchFilter.push(val.toLowerCase().includes(filters.value.toLowerCase()));
+
+    return matchFilter.every(Boolean);
+  };
+  //this.employeeList.filter = filtersJson;
+}*/

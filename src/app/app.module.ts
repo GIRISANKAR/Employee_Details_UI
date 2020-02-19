@@ -21,7 +21,7 @@ import {
   MatToolbarModule,
   MatCheckboxModule,
   MatTableModule,
-  MatPaginatorModule
+  MatPaginatorModule, MatCardModule, MatSpinner,
 } from "@angular/material";
 import {HttpClientModule} from "@angular/common/http";
 import { HomeComponent } from './home/home.component';
@@ -39,7 +39,9 @@ import { AdminComponent } from './admin/admin.component';
     HomeComponent,
     EmployeeListComponent,
     LoginComponent,
-    AdminComponent
+    AdminComponent,
+    MatSpinner
+
 
   ],
   imports: [
@@ -70,7 +72,10 @@ import { AdminComponent } from './admin/admin.component';
     MatCheckboxModule,
       MatTableModule,
       MatDatepickerModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      MatCardModule,
+
+
 
 ],
   providers: [],

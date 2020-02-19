@@ -7,35 +7,35 @@
     {{tile.text}}
   </mat-grid-tile>
 </mat-grid-list>&ndash;&gt;-->
-<!--<app-login></app-login>-->
-
-<mat-toolbar class="header">
-  <table style="width:100%">
-    <col align="left">
-    <col align="right">
-  <tr>
-    <td><img src="assets/images/htclogo.png" width="185px" height="150px"></td>
-    <td><span ><b>Employee Details</b></span></td>
-  </tr>
-  </table>
-</mat-toolbar>
+<!--<mat-toolbar class="header">
+    <table style="width:100%">
+        <col align="left">
+        <col align="right">
+        <col align="right">
+        <tr>
+            <td><img src="assets/images/htclogo.png" width="185px" height="150px"></td>
+            <td><span ><b>Employee Details</b></span></td>
+            <td><button (click)="logout()">Logout</button></td>
+        </tr>
+    </table>
+</mat-toolbar>-->
 
 <mat-drawer-container class="example-container">
-  <mat-drawer mode="side" class="widthContainer"opened>
-    <nav class="m-2" style="margin-top:10rem">
-      <b><a routerLink="home" routerLinkActive="active"><mat-icon >home</mat-icon>Home</a></b>
-     </nav>
-    <nav class="m-2">
+    <mat-drawer mode="side" class="widthContainer" opened>
+        <nav class="m-2" style="margin-top:10rem">
+            <b><a routerLink="home" routerLinkActive="active"><mat-icon >home</mat-icon>Home</a></b>
+        </nav>
+        <nav class="m-2">
 
-      <b><a routerLink="employeeDetails" routerLinkActive="active"><mat-icon>account_circle</mat-icon>Add Employee</a></b></nav>
-    <nav class="m-2">
-      <b><a routerLink="search" routerLinkActive="active">  <mat-icon>search</mat-icon> Search</a></b></nav>
-  </mat-drawer>
-  <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
+            <b><a routerLink="employeeDetails" routerLinkActive="active"><mat-icon>account_circle</mat-icon>Add Employee</a></b></nav>
+        <nav class="m-2">
+            <b><a routerLink="search" routerLinkActive="active">  <mat-icon>search</mat-icon> Search</a></b></nav>
+    </mat-drawer>
+    <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
 </mat-drawer-container>
 
 
 
+
 <!--
-<router-outlet></router-outlet>
 -->
