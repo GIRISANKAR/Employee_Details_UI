@@ -141,12 +141,13 @@ export class EmployeeComponent implements OnInit {
       projectId: [''],
       projectName: [''],
       reportingTo: [''],
-      deliveryHead: [''],
+   //   deliveryHead: [''],
       projectLocation: [''],
       startDate: [''],
       endDate: [''],
-      skillSet: [''],
-      projectDescription: ['']
+      active: ['']
+   //   skillSet: [''],
+    //  projectDescription: ['']
     })
   }
 
@@ -155,12 +156,13 @@ export class EmployeeComponent implements OnInit {
       projectId: [project.projectId],
       projectName: [project.projectName],
       reportingTo: [project.reportingTo],
-      deliveryHead: [project.deliveryHead],
+   //   deliveryHead: [project.deliveryHead],
       projectLocation: [project.projectLocation],
       startDate: [project.startDate],
       endDate: [project.endDate],
-      skillSet: [project.skillSet],
-      projectDescription: [project.projectDescription]
+      active: [project.active]
+     // skillSet: [project.skillSet],
+     // projectDescription: [project.projectDescription]
     })
   }
 
