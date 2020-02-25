@@ -77,8 +77,8 @@ export class EmployeeComponent implements OnInit {
       officialEmailAddr: ['', [Validators.required, Validators.email]],
       emailAddr: ['', [Validators.required, Validators.email]],
       extensionNumber: ['', [Validators.required, Validators.maxLength(6)]],
-      mobileNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      alternativeMobileNumber: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+      mobileNumber: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
+      alternativeMobileNumber: ['', Validators.pattern(/^[6-9]\d{9}$/)],
       addressId: [''],
       addressLine: ['', Validators.required],
       city: ['', Validators.required],
@@ -102,8 +102,8 @@ export class EmployeeComponent implements OnInit {
   newSkill(): FormGroup {
     return this.fb.group({
       skillId: [''],
-      skillName: ['',,Validators.required],
-      experience: [null,,Validators.required],
+      skillName: [''],
+      experience: [null]
     })
   }
 
@@ -132,11 +132,11 @@ export class EmployeeComponent implements OnInit {
     return this.fb.group({
       employeeProjectId: [''],
       projectId: [''],
-      projectName: ['',Validators.required],
-      reportingTo: ['',Validators.required],
-      location: ['',Validators.required],
-      startDate: ['',Validators.required],
-      endDate: ['',Validators.required],
+      projectName: [''],
+      reportingTo: [''],
+      location: [''],
+      startDate: [''],
+      endDate: [''],
       active: ['']
     })
   }

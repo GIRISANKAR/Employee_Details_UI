@@ -3,7 +3,8 @@ import {EmployeeServiceService} from "../service/employee-service.service";
 import {NavigationExtras, Router} from "@angular/router";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort, MatPaginator} from "@angular/material";
-import * as XLSX from 'xlsx';
+
+
 
 declare var $: any;
 
@@ -83,13 +84,36 @@ export class EmployeeListComponent implements OnInit {
         this.employeeList.filter=JSON.stringify(obj);
     }
 
-
+/*
     exportExcel() {
         let index: number;
-        const workSheet = XLSX.utils.json_to_sheet(this.employeeList.filteredData);
+        /!*const workSheet = Xlsx.utils.json_to_sheet(this.employeeList.filteredData);
         const workBook: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workBook, workSheet, 'SheetName');
-        XLSX.writeFile(workBook, 'filename.xlsx');
-    }
+        XLSX.writeFile(workBook, 'filename.xlsx');*!/
+    }*/
+   /* exportToExcel() {
+        let dataToExport = this.employeeList.filteredData
+            .map(x => ({
+                DisplayName: x.DisplayName,
+                Name: x.Name,
+                Type: x.Type == '0' ? 'Partial' : 'Full'
+            }));
+
+        let workSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport, <XLSX.Table2SheetOpts>{ sheet: 'Sheet 1' });
+        let workBook: XLSX.WorkBook = XLSX.utils.book_new();
+
+        // Adjust column width
+        var wscols = [
+            { wch: 50 },
+            { wch: 50 },
+            { wch: 30 }
+        ];
+
+        workSheet["!cols"] = wscols;
+
+        XLSX.utils.book_append_sheet(workBook, workSheet, 'Sheet 1');
+        XLSX.writeFile(workBook, `${this.exportToExcelFileName}.xlsx`);
+    }*/
 }
 

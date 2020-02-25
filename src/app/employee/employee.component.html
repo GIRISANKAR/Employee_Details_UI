@@ -96,26 +96,26 @@
                 PersonalDetails
             </mat-panel-title>
             <mat-form-field>
-                <input matInput placeholder="Official Email Address " required formControlName="officialEmailAddr" class="form-control" />
+                <input type="ëmail" matInput placeholder="Official Email Address " required formControlName="officialEmailAddr" class="form-control" />
                 <div *ngIf="fval.officialEmailAddr.invalid && (fval.officialEmailAddr.dirty || fval.officialEmailAddr.touched)"
                      class="alert alert-danger">
                     <div *ngIf="fval.officialEmailAddr.errors.required">
                         Official Email Address is required
                     </div>
-                    <div *ngIf="fval.officialEmailAddr.errors.pattern">
+                    <div *ngIf="fval.officialEmailAddr.errors.email">
                        Email Address is Invalid
                     </div>
                 </div>
             </mat-form-field>
             &nbsp;
             <mat-form-field>
-                <input matInput placeholder=" Personal Email Address" required formControlName="emailAddr" class="form-control" />
+                <input type="ëmail"matInput placeholder=" Personal Email Address" required formControlName="emailAddr" class="form-control" />
                 <div *ngIf="fval.emailAddr.invalid && (fval.emailAddr.dirty || fval.emailAddr.touched)"
                      class="alert alert-danger">
                     <div *ngIf="fval.emailAddr.errors.required">
                         Email Address is required
                     </div>
-                    <div *ngIf="fval.emailAddr.errors.pattern">
+                    <div *ngIf="fval.emailAddr.errors.email">
                         Email Address is invalid
                     </div>
                 </div>
@@ -142,12 +142,9 @@
                     <div *ngIf="fval.mobileNumber.errors.required">
                         Mobile Number is required
                     </div>
-                    <div *ngIf="fval.mobileNumber.errors.minLength">
-                            Mobile number should be 10 digit number
+                    <div *ngIf="fval.mobileNumber.errors.pattern">
+                        Please enter a valid mobile number
                         </div>
-                    <div *ngIf="fval.mobileNumber.errors.maxLength">
-                        Mobile number should be 10 digit number
-                    </div>
                 </div>
             </mat-form-field>
             &nbsp;
@@ -156,11 +153,8 @@
                 <div *ngIf="fval.alternativeMobileNumber.invalid && (fval.alternativeMobileNumber.dirty || fval.alternativeMobileNumber.touched)"
                      class="alert alert-danger">
 
-                    <div *ngIf="fval.alternativeMobileNumber.errors.minLength">
-                        Mobile number should be 10 digit number
-                    </div>
-                    <div *ngIf="fval.alternativeMobileNumber.errors.maxLength">
-                        Mobile number should be 10 digit number
+                    <div *ngIf="fval.alternativeMobileNumber.errors.pattern">
+                        Please enter a valid mobile number
                     </div>
                 </div>
             </mat-form-field>
@@ -245,34 +239,16 @@
                         <mat-form-field>
                             <input matInput placeholder="Reporting To " required formControlName="reportingTo"
                                    class="form-control"/>
-                            <div *ngIf="fval.reportingTo.invalid && (fval.reportingTo.dirty || fval.reportingTo.touched)"
-                                 class="alert alert-danger">
-                                <div *ngIf="fval.reportingTo.errors.required">
-                                    Reporting person is required
-                                </div>
-                            </div>
                         </mat-form-field>
                         &nbsp;
                         <mat-form-field>
                             <mat-label>Start date</mat-label>
-                            <input type="date" matInput  formControlName="startDate" required class="form-control">
-                            <div *ngIf="fval.startDate.invalid && (fval.startDate.dirty || fval.startDate.touched)"
-                                 class="alert alert-danger">
-                                <div *ngIf="fval.startDate.errors.required">
-                                     Project start date is required
-                                </div>
-                            </div>
+                            <input type="date" matInput  formControlName="startDate" required class="form-control"/>
                         </mat-form-field>
                         &nbsp;
                         <mat-form-field>
                             <mat-label>End date</mat-label>
-                            <input type="date" matInput  formControlName="endDate" required class="form-control">
-                            <div *ngIf="fval.endDate.invalid && (fval.endDate.dirty || fval.endDate.touched)"
-                                 class="alert alert-danger">
-                                <div *ngIf="fval.endDate.errors.required">
-                                    Project end date is required
-                                </div>
-                            </div>
+                            <input type="date" matInput  formControlName="endDate" required class="form-control"/>
                         </mat-form-field>
                         &nbsp;
                         <mat-form-field>
@@ -308,24 +284,12 @@
                                 <mat-label>Skill Name</mat-label>
                                 <mat-select matNativeControl  required formControlName="skillName" class="form-control" >
                                     <mat-option *ngFor="let skillName of skillNames" [value]="skillName">{{skillName}}</mat-option>
-                                    <div *ngIf="fval.skillName.invalid && (fval.skillName.dirty || fval.skillName.touched)"
-                                         class="alert alert-danger">
-                                        <div *ngIf="fval.skillName.errors.required">
-                                            Skill Name is required
-                                        </div>
-                                    </div>
                                 </mat-select>
                             </mat-form-field>
                             &nbsp;
                             <mat-form-field>
                                 <mat-label>Experience</mat-label>
                                 <input matInput required formControlName="experience" class="form-control"/>
-                                <div *ngIf="fval.experience.invalid && (fval.experience.dirty || fval.experience.touched)"
-                                     class="alert alert-danger">
-                                    <div *ngIf="fval.experience.errors.required">
-                                        Experience is required
-                                    </div>
-                                </div>
                             </mat-form-field>
                             &nbsp; &nbsp;
                             <button (click)="removeSkill(i)">Remove</button>

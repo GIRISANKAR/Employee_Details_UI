@@ -4,11 +4,13 @@
             <button mat-raised-button color="primary" routerLink='/employeeDetails'>Add Employee</button>
         </div>
         &nbsp;
-        <div class="col-md-3">
+        <div class="col-md-3" align="left" width="100">
             <button mat-raised-button color="primary" (click)="exportExcel()">Export as Excel</button>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" align="right">
+            <mat-form-field>
             <input matInput type="text" align="right" (keyup)="doFilter($event.target.value)" placeholder="Search">
+            </mat-form-field>
         </div>
 </div>
 &nbsp;
