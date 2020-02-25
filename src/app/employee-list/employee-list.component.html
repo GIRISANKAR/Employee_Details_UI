@@ -1,16 +1,15 @@
 
-<div>
-        <mat-action-row>
+<div class="row">
+        <div class="col-md-3">
             <button mat-raised-button color="primary" routerLink='/employeeDetails'>Add Employee</button>
-        </mat-action-row>
+        </div>
         &nbsp;
-        <mat-action-row>
+        <div class="col-md-3">
             <button mat-raised-button color="primary" (click)="exportExcel()">Export as Excel</button>
-        </mat-action-row>
-       &nbsp;&nbsp;
-        <mat-form-field>
+        </div>
+        <div class="col-md-3">
             <input matInput type="text" align="right" (keyup)="doFilter($event.target.value)" placeholder="Search">
-        </mat-form-field>
+        </div>
 </div>
 &nbsp;
 <table mat-table matSort [dataSource]="employeeList" matSort matSortDirection="desc">

@@ -13,7 +13,7 @@ export class EmployeeComponent implements OnInit {
 
   addEmployeeForm: FormGroup;
   projectList : any[];
-  submitted = false;
+  submitted = true;
   skillNames: any[];
   resp;
 
@@ -66,7 +66,7 @@ export class EmployeeComponent implements OnInit {
 
   reactiveForm() {
     this.addEmployeeForm = this.fb.group({
-      empId: ['', [Validators.required]],
+      empId: ['', [Validators.required,Validators.pattern('[0-9]*')]],
       empName: ['', [Validators.required, Validators.maxLength(100)]],
       designation: ['', Validators.required],
       primaryWorkLocation: ['', Validators.required],
@@ -76,7 +76,7 @@ export class EmployeeComponent implements OnInit {
       personalDetailsId: [''],
       officialEmailAddr: ['', [Validators.required, Validators.email]],
       emailAddr: ['', [Validators.required, Validators.email]],
-      extensionNumber: ['', Validators.required],
+      extensionNumber: ['', [Validators.required, Validators.maxLength(6)]],
       mobileNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       alternativeMobileNumber: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       addressId: [''],
@@ -102,8 +102,8 @@ export class EmployeeComponent implements OnInit {
   newSkill(): FormGroup {
     return this.fb.group({
       skillId: [''],
-      skillName: [''],
-      experience: [null],
+      skillName: ['',,Validators.required],
+      experience: [null,,Validators.required],
     })
   }
 
@@ -132,11 +132,11 @@ export class EmployeeComponent implements OnInit {
     return this.fb.group({
       employeeProjectId: [''],
       projectId: [''],
-      projectName: [''],
-      reportingTo: [''],
-      location: [''],
-      startDate: [''],
-      endDate: [''],
+      projectName: ['',Validators.required],
+      reportingTo: ['',Validators.required],
+      location: ['',Validators.required],
+      startDate: ['',Validators.required],
+      endDate: ['',Validators.required],
       active: ['']
     })
   }
@@ -177,8 +177,7 @@ export class EmployeeComponent implements OnInit {
             alert(resp.message)
           }
         });
-    this.router.navigateByUrl("employeeDetails");
-
+    this.router.navigateByUrl("search");
   }
 
   countrySelect(event) {
