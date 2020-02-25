@@ -7,8 +7,6 @@ import {LoginComponent} from "./login/login.component";
 import {AdminComponent} from "./admin/admin.component";
 import {AuthGuard} from "./authentication/auth.guard";
 
-
-
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path:'home', component: HomeComponent},

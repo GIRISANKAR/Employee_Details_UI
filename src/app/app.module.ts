@@ -21,7 +21,7 @@ import {
     MatToolbarModule,
     MatCheckboxModule,
     MatTableModule,
-    MatPaginatorModule, MatCardModule, MatSpinner,
+    MatPaginatorModule, MatCardModule, MatSpinner, MatButtonModule, MatSort,
 } from "@angular/material";
 import {HttpClientModule} from "@angular/common/http";
 import {HomeComponent} from './home/home.component';
@@ -32,6 +32,7 @@ import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {LoginComponent} from './login/login.component';
 import {AdminComponent} from './admin/admin.component';
 
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -40,9 +41,8 @@ import {AdminComponent} from './admin/admin.component';
         EmployeeListComponent,
         LoginComponent,
         AdminComponent,
-        MatSpinner
-
-
+        MatSpinner,
+        MatSort
     ],
     imports: [
         BrowserModule,
@@ -74,8 +74,7 @@ import {AdminComponent} from './admin/admin.component';
         MatDatepickerModule,
         MatPaginatorModule,
         MatCardModule,
-
-
+        MatButtonModule,
 
     ],
     providers: [],

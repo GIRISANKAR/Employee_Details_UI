@@ -1,126 +1,95 @@
-
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Observable} from "rxjs";
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {EmployeeServiceService} from "../service/employee-service.service";
-import {EmployeeList} from "./employee-list";
 import {NavigationExtras, Router} from "@angular/router";
 import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator, MatSort} from "@angular/material";
+import {MatSort, MatPaginator} from "@angular/material";
+import * as XLSX from 'xlsx';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-employee-list',
-  templateUrl: './material-list.component.html',
-  styleUrls: ['./employee-list.component.css']
+    selector: 'app-employee-list',
+    templateUrl: './employee-list.component.html',
+    styleUrls: ['./employee-list.component.css']
 })
-export class EmployeeListComponent implements OnInit, AfterViewInit  {
-  employeeList = new MatTableDataSource<EmployeeListComponent>();
-  employeeObject: any[];
+export class EmployeeListComponent implements OnInit {
 
-  displayedColumns: string[] = ['empId','empName','primaryWorkLocation','update', 'delete'];
-  //dataSource = new MatTableDataSource<EmployeeListComponent>();
- paginator: MatPaginator;
- sort: MatSort;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
+    @ViewChild(MatPaginator, {static: true}) page: MatPaginator;
+    @ViewChild('TABLE',{static:true}) table: ElementRef;
+    employeeList = new MatTableDataSource<EmployeeListComponent>();
+    employeeDetail= new MatTableDataSource<EmployeeListComponent>();
+    employeeObject: any[];
+    displayedColumns: string[] = ['empId', 'empName', 'projectName',
+        'overallExperience', 'extensionNumber', 'officialEmailAddr', 'mobileNumber', 'primaryWorkLocation', 'update', 'delete'];
 
-  constructor(private employeeService: EmployeeServiceService, private router: Router) {
-  }
+    constructor(private employeeService: EmployeeServiceService, private router: Router) {
+    }
 
-  doFilter = (value: string) => {
-    this.employeeList.filter = value.trim().toLocaleLowerCase();
-  }
+    doFilter = (value: string) => {
+        this.employeeList.filter = value.trim().toLocaleLowerCase();
+    }
 
+    getEmployeeList() {
+        this.employeeService.getEmployeeList().subscribe(data => {
+            this.employeeList.data = data;
+        });
+    }
 
-  getEmployeeList() {
-    this.employeeService.getEmployeeList().subscribe(data => {
-      this.employeeList.data = data;
-    });
-  }
-  toggleModel(employee) {
-    this.employeeObject = employee;
-    $("#myModal").modal("show")
-  }
+    toggleModel(employee) {
+        this.employeeDetail = employee;
+        $("#myModal").modal("show")
+    }
 
-  editEmployee(employee) {
-    let navigationExtras: NavigationExtras = {
-      queryParams: {
-        "employee": JSON.stringify(employee)
-      }
-    };
-    this.router.navigate(['employeeDetails'], navigationExtras)
-  }
+    editEmployee(employee) {
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                "employee": JSON.stringify(employee)
+            }
+        };
+        this.router.navigate(['employeeDetails'], navigationExtras)
+    }
 
-  deleteEmployee(employee) {
-    this.employeeService.deleteEmployee(employee.empId).subscribe(data => {
-      this.getEmployeeList();
-    });
+    deleteEmployee(employee) {
+        this.employeeService.deleteEmployee(employee.empId).subscribe(data => {
+            this.getEmployeeList();
+        });
+    }
 
-  }
+    deleteModel(employee) {
+        this.employeeObject = employee;
+        $("#delete").modal("show")
+    }
 
-  deleteModel(employee) {
-    this.employeeObject = employee;
-    $("#delete").modal("show")
-  }
-
-  public redirectToUpdate = (id: string) => {
-
-  }
-
-  public redirectToDelete = (id: string) => {
-
-  }
-
-  ngOnInit() {
-    this.getEmployeeList();
-    this.generateTable(this.employeeList);
-
-  }
-
-
-ngAfterViewInit(): void {
-  this.employeeList.sort = this.sort;
-this.employeeList.paginator = this.paginator;
-}
-
-/*applyColumnFilter() {
-
-    this.employeeList.filterPredicate = function (data, filter: string): boolean {
-        return data.empId.toLowerCase().includes(filter) || data.empName.toLowerCase().includes(filter) || data.primaryWorkLocation.toString().includes(filter);
-    };
-}*/
-    generateTable(tableData: any) {
-        this.employeeList = new MatTableDataSource(tableData);
-        this.employeeList.paginator = this.paginator;
+    ngOnInit() {
+        this.getEmployeeList();
         this.employeeList.sort = this.sort;
+        this.employeeList.paginator = this.page;
+    }
+
+    generateTable(tableData: string,column) {
+       var obj ={id:column,value:tableData}
         this.employeeList.filterPredicate = (data: any, filter: string) => {
             console.log(data);
             console.log(filter);
             let matchFound = false;
-            for (let column of this.displayedColumns) {
-                if(column in data) {
-                    if(data[column]) {
-                        matchFound = (matchFound || data[column].toString().trim().toLowerCase().indexOf(filter.trim().toLowerCase()) !== -1)
+            let filters = JSON.parse(filter);
+
+                    if (data[filters.id]) {
+                        matchFound = (matchFound || data[filters.id].toString().trim().toLowerCase().indexOf(filters.value.trim().toLowerCase()) !== -1)
                     }
-                }
-            }
             return matchFound;
         }
+        this.employeeList.filter=JSON.stringify(obj);
+    }
+
+
+    exportExcel() {
+        let index: number;
+        const workSheet = XLSX.utils.json_to_sheet(this.employeeList.filteredData);
+        const workBook: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workBook, workSheet, 'SheetName');
+        XLSX.writeFile(workBook, 'filename.xlsx');
     }
 }
 
-
-/*
-applyFilter(filterValue: string, column) {
-  filterValue : filterValue.trim(); // Remove whitespace
-  filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-  let filtersJson = {id:column,value:filterValue}
-  this.employeeList.filterPredicate = (data: EmployeeListComponent, filtersJson: string) => {
-    const matchFilter = [];
-    const filters = JSON.parse(filtersJson);
-    const val = data[filters.id] === null ? '' : data[filters.id];
-    matchFilter.push(val.toLowerCase().includes(filters.value.toLowerCase()));
-
-    return matchFilter.every(Boolean);
-  };
-  //this.employeeList.filter = filtersJson;
-}*/

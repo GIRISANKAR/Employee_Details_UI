@@ -1,138 +1,175 @@
-<h3><span class="m-2">Employee's List</span></h3>
 
-<div  align="right">
- <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
-         placeholder= "Start searching for a Employee">
-</div>&nbsp;
-
-<div class="row ml-1">
-
-  <button routerLink='/employeeDetails'>Add Employee</button>
-  &nbsp;
-  &nbsp;
-
-  <table class="table table-bordered table-striped table-responsive">
-    <thead class="header">
-    <tr>
-      <th>Employee Id</th>
-      <th>Employee Name</th>
-      <th>Designation</th>
-      <th>Location</th>
-      <th>Official EmailAddress</th>
-      <th>Extn Number</th>
-      <th>Mobile Number</th>
-      <th>HTC Experience</th>
-      <th>Total Experience</th>
-    </tr>
-    </thead>
-    <tbody *ngFor="let employee of employeeList | filter:searchText">
-    <tr>
-      <div ng-include="'employee.component.html'">
-        <td>
-          <mat-icon (click)="editEmployee(employee)">edit</mat-icon>
-        </td>
-      </div>
-      <td class="id" (click)="toggleModel(employee)">{{employee.empId}}</td>
-      <td>{{employee.empName}}</td>
-      <td>{{employee.designation}}</td>
-      <td>{{employee.primaryWorkLocation}}</td>
-      <td>{{employee.officialEmailAddr}}</td>
-      <td>{{employee.extensionNumber}}</td>
-      <td>{{employee.mobileNumber}}</td>
-      <td>{{employee.htcExperience}}</td>
-      <td>{{employee.overallExperience}}</td>
-
-      <td>
-       <mat-icon (click)="deleteModel(employee)">delete</mat-icon>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <!--list of skills & projects displaying-->
-
-  <div class="modal" id="myModal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">
-            {{employeeObject.empName}}
-          </h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <b>Skills</b>
-          <table class="table table-bordered table-striped table-responsive">
-            <tr>
-              <th>SkillName</th>
-              <th>Experience</th>
-            </tr>
-            <tbody *ngFor="let skill of employeeObject.skills">
-            <tr>
-              <td>{{skill.skillName}}</td>
-              <td>{{skill.experience}}</td>
-            </tr>
-            </tbody>
-          </table>
-          <b>Projects</b>
-          <table class="table table-bordered table-striped table-responsive">
-            <tr>
-              <th>ProjectName</th>
-              <th>Reporting To</th>
-              <th>Delivery Head</th>
-            </tr>
-            <tbody *ngFor="let project of employeeObject.projects">
-            <tr>
-              <td>{{project.projectName}}</td>
-              <td>{{project.reportingTo}}</td>
-              <td>{{project.deliveryHead}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
+<div>
+        <mat-action-row>
+            <button mat-raised-button color="primary" routerLink='/employeeDetails'>Add Employee</button>
+        </mat-action-row>
+        &nbsp;
+        <mat-action-row>
+            <button mat-raised-button color="primary" (click)="exportExcel()">Export as Excel</button>
+        </mat-action-row>
+       &nbsp;&nbsp;
+        <mat-form-field>
+            <input matInput type="text" align="right" (keyup)="doFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
 </div>
+&nbsp;
+<table mat-table matSort [dataSource]="employeeList" matSort matSortDirection="desc">
+    <ng-container matColumnDef="empId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Id
+            <div>
+                <mat-form-field fxFlex="40%">
+                    <input matInput type="text" (keyup)="generateTable($event.target.value,'empId')">
+                </mat-form-field>
+            </div>
+        </th>
+        <td mat-cell *matCellDef="let employeeList" class="id" (click)="toggleModel(employeeList)"> {{employeeList.empId}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="empName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name
+            <div>
+                <mat-form-field fxFlex="40%">
+                    <input matInput type="text" (keyup)="generateTable($event.target.value,'empName')"
+                           placeholder=" Name Search">
+                </mat-form-field>
+            </div>
+        </th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.empName}}</td>
+    </ng-container>
+    <ng-container matColumnDef="extensionNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Extension Number</th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.extensionNumber}}</td>
+    </ng-container>
+    <ng-container matColumnDef="officialEmailAddr">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Official EmailAddress</th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.officialEmailAddr}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="mobileNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile Number</th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.mobileNumber}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="primaryWorkLocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Location</th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.primaryWorkLocation}}</td>
+    </ng-container>
+    <ng-container matColumnDef="projectName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Project Name
+            <div>
+                <mat-form-field fxFlex="40%">
+                    <input matInput type="text" (keyup)="generateTable($event.target.value,'projectName')"
+                           placeholder=" Project Search">
+                </mat-form-field>
+            </div>
+        </th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.projectName}}</td>
+    </ng-container>
+    <ng-container matColumnDef="overallExperience">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Overall Experience
+            <div>
+                <mat-form-field fxFlex="40%">
+                    <input matInput type="text" (keyup)="generateTable($event.target.value,'overallExperience')"
+                           placeholder=" Experience Search">
+                </mat-form-field>
+            </div>
+        </th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.overallExperience}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef> Update</th>
+        <td mat-cell *matCellDef="let employeeList">
+            <mat-icon class="iconColor"  (click)="editEmployee(employeeList) ">
+                <mat-icon class="mat-18">edit</mat-icon>
+            </mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete</th>
+        <td mat-cell *matCellDef="let employeeList">
+            <mat-icon color="warn" (click)="deleteModel(employeeList)">
+                <mat-icon class="mat-18">delete</mat-icon>
+            </mat-icon>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+</table>
+<mat-paginator [length]="100"
+               [pageSize]="10"
+               [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
 
 <div class="modal" id="delete" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Do you want to delete Employee from list?</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-        <button (click)="deleteEmployee(employeeObject)" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
-      </div>
-
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Do you want to delete Employee from list?</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button (click)="deleteEmployee(employeeObject)" type="button" class="btn btn-danger"
+                        data-dismiss="modal">Delete
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
+<div class="modal" id="myModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{employeeDetail.empName}}
+                </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
 
+            <!-- Modal body -->
+            <div class="modal-body">
+                <b>Skills</b>
+                <table class="table table-bordered table-striped table-responsive">
+                    <tr>
+                        <th>SkillName</th>
+                        <th>Experience</th>
+                    </tr>
+                    <tbody *ngFor="let skill of employeeDetail.skills">
+                    <tr>
+                        <td>{{skill.skillName}}</td>
+                        <td>{{skill.experience}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <b>Projects</b>
+                <table class="table table-bordered table-striped table-responsive">
+                    <tr>
+                        <th>ProjectName</th>
+                        <th>Reporting To</th>
+                    </tr>
+                    <tbody *ngFor="let project of employeeDetail.projects">
+                    <tr>
+                        <td>{{project.projectName}}</td>
+                        <td>{{project.reportingTo}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
 
-
-
-
-
-
-
+        </div>
+    </div>
+</div>

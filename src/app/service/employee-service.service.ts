@@ -11,13 +11,14 @@ import {HttpParams} from "@angular/common/http";
 export class EmployeeServiceService {
   private baseUrl = 'http://localhost:8080';
 
+
   paramName="skills";
   constructor(private http: HttpClient) {
   }
 
-  addEmployee(employee): Observable<object> {
+  addEmployee(employee): Observable<any> {
     return this.http.post(this.baseUrl + "/addEmployee/", employee,
-      {headers: new HttpHeaders({'Content-Type': 'application/json'})});
+      {responseType: 'json'});
   }
 
 
@@ -26,16 +27,18 @@ export class EmployeeServiceService {
   }
 
 
-  deleteEmployee(empId): Observable<object> {
+  deleteEmployee(empId): Observable<any> {
     let params = new HttpParams().set('employeeId',empId);
     return this.http.post(this.baseUrl + "/deleteEmployee/", params);
   }
 
-  /*getSkillNames(): Observable<object> {
-    return this.http.get(`${this.baseUrl}/getSkillNames?paramName=skills`);
-  }*/
+  getSkillNames(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/getSkillNames`);
+  }
 
-  getSkillNames(paramName): Observable<object> {
-    return this.http.get(`${this.baseUrl}/getSkillNames/${this.paramName}`)
+
+
+  getProjectList(): Observable< any > {
+    return this.http.get(`${this.baseUrl}/getProjectList`);
   }
 }

@@ -11,7 +11,7 @@
             </mat-expansion-panel-header>
 
             <mat-form-field>
-                <input matInput placeholder="Employee Id "  required formControlName="empId" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.empId.errors }"/>
+                <input matInput type="number" placeholder="Employee Id "  formControlName="empId" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.empId.errors }"/>
                 <div *ngIf="submitted && fval.empId.errors" class="alert alert-danger">
                     <div *ngIf="fval.empId.errors.required">
                         Employee Id is required
@@ -60,7 +60,7 @@
             </div>
             &nbsp;
             <mat-form-field>
-                <input matInput placeholder="HtcExperience " required formControlName="htcExperience" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.htcExperience.errors }"/>
+                <input matInput placeholder="HtcExperience " type="number" required formControlName="htcExperience" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.htcExperience.errors }"/>
                 <div *ngIf="submitted && fval.htcExperience.errors" class="alert alert-danger">
                     <div *ngIf="fval.htcExperience.errors.required">
                         HtcExperience is required
@@ -69,12 +69,16 @@
             </mat-form-field>
             &nbsp;
             <mat-form-field>
-                <input matInput placeholder="OverallExperience " required formControlName="overallExperience" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.overallExperience.errors }"/>
+                <input matInput placeholder="OverallExperience" type="number" required formControlName="overallExperience" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.overallExperience.errors }"/>
                 <div *ngIf="submitted && fval.overallExperience.errors" class="alert alert-danger">
                     <div *ngIf="fval.overallExperience.errors.required">
                         OverallExperience is required
                     </div>
                 </div>
+            </mat-form-field>&nbsp;
+
+            <mat-form-field>
+                <input matInput placeholder="Primary Skills " required formControlName="primarySkills" class="form-control" />
             </mat-form-field>
             &nbsp;&nbsp;&nbsp;
             <mat-panel-title>
@@ -117,7 +121,7 @@
                     <div *ngIf="fval.mobileNumber.errors.required">
                         Mobile Number is required
                     </div>
-                        <div *ngIf="fval.mobileNumber.errors.minLength">
+                    <div *ngIf="fval.mobileNumber.errors.minLength">
                             Mobile number should be 10 digit number
                         </div>
                     <div *ngIf="fval.mobileNumber.errors.maxLength">
@@ -170,7 +174,7 @@
                 </div>
             </mat-form-field>
 
-            <mat-select-country countryFormControl="country" (onCountrySelected)="countrySelect($event)" required>
+            <mat-select-country   countryFormControl="country" (onCountrySelected)="countrySelect($event)" required >
             </mat-select-country>
             &nbsp;
 
@@ -202,43 +206,29 @@
                     <div [formGroupName]="i">
                         <mat-form-field>
                             <mat-label>Project Name</mat-label>
-                            <mat-select matNativeControl formControlName="projectName" class="form-control">
-                                <mat-option value="NahoForms">NahoForms</mat-option>
-                                <mat-option value="TheGeneral">TheGeneral</mat-option>
-                                <mat-option value="Recap"> Recap</mat-option>
-                                <mat-option value="HashStirngs">HashStrings</mat-option>
-                                <mat-option value="Ole">Ole</mat-option>
+                            <mat-select formControlName="projectId" required class="form-control">
+                                <mat-option *ngFor="let projectObj of projectList" [value]="projectObj.projectId">{{projectObj.projectName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        &nbsp;
                         <mat-form-field>
-                            <input matInput placeholder="Reporting To " formControlName="reportingTo"
+                            <input matInput placeholder="Reporting To " required formControlName="reportingTo"
                                    class="form-control"/>
                         </mat-form-field>
                         &nbsp;
-                        <!--<mat-form-field>
-                            <input matInput placeholder="Delivery Head" formControlName="deliveryHead"
-                                   class="form-control"/>
-                        </mat-form-field>-->
-                        &nbsp;
-
                         <mat-form-field>
                             <mat-label>Start date</mat-label>
-                            <input matInput [matDatepicker]="picker1">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1 startView="year" [startAt]="startDate"></mat-datepicker>
+                            <input type="date" matInput  formControlName="startDate" required class="form-control">
                         </mat-form-field>
                         &nbsp;
                         <mat-form-field>
                             <mat-label>End date</mat-label>
-                            <input matInput [matDatepicker]="picker2">
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2 startView="year" [startAt]="endDate"></mat-datepicker>
+                            <input type="date" matInput  formControlName="endDate" required class="form-control">
                         </mat-form-field>
                         &nbsp;
                         <mat-form-field>
                             <mat-label>Location</mat-label>
-                            <mat-select matNativeControl  formControlName="projectLocation" class="form-control">
+                            <mat-select  formControlName="location" required class="form-control">
                                 <mat-option value="Mepz">Mepz</mat-option>
                                 <mat-option value="Guindy">Guindy</mat-option>
                                 <mat-option value="HTCHyderabad"> HTCHyderabad</mat-option>
@@ -246,17 +236,6 @@
                                 <mat-option value="Client">Client</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        &nbsp;
-                        <!--<mat-form-field class="example-full-width">
-                            <mat-label>Skill Set</mat-label>
-                            <textarea matInput placeholder="..." formControlName="skillSet"
-                                      class="form-control"></textarea>
-                        </mat-form-field>
-                        <mat-form-field class="example-full-width">
-                            <mat-label>Project Description</mat-label>
-                            <textarea matInput placeholder="..." formControlName="projectDescription"
-                                      class="form-control"></textarea>
-                        </mat-form-field>-->
                         &nbsp;
                         <mat-checkbox formControlName="active">Active</mat-checkbox>
                         &nbsp;
@@ -278,19 +257,14 @@
                         <div [formGroupName]="i">
                             <mat-form-field>
                                 <mat-label>Skill Name</mat-label>
-                                <mat-select matNativeControl  formControlName="skillName" class="form-control" >
-                                    <mat-option value="0">--Select--</mat-option>
-                                    <mat-option *ngFor="let skill of skillNames"
-                                            value={{skill.skillId}}>
-                                        {{skill.skillName}}
-                                    </mat-option>
+                                <mat-select matNativeControl  required formControlName="skillName" class="form-control" >
+                                    <mat-option *ngFor="let skillName of skillNames" [value]="skillName">{{skillName}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-
+                            &nbsp;
                             <mat-form-field>
                                 <mat-label>Experience</mat-label>
-                                <input matInput formControlName="experience" class="form-control"/>
+                                <input matInput required formControlName="experience" class="form-control"/>
                             </mat-form-field>
                             &nbsp; &nbsp;
                             <button (click)="removeSkill(i)">Remove</button>
@@ -301,7 +275,7 @@
             </mat-list>
         </mat-expansion-panel>
         <mat-action-row>
-            <button type="submit" mat-button color="primary" [disabled]="!addEmployeeForm.valid">Submit</button>
+            <button type="submit"  class="button" [disabled]="!addEmployeeForm.valid" color="primary">Submit</button>
         </mat-action-row>
     </mat-accordion>
 </form>

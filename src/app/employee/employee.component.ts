@@ -3,8 +3,7 @@ import {EmployeeServiceService} from "../service/employee-service.service";
 import {FormBuilder, FormGroup, FormArray, Validators} from "@angular/forms";
 import { employee} from "./employee";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Location} from "@angular/common";
-import {Skill} from "./skill";
+
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
@@ -12,17 +11,14 @@ import {Skill} from "./skill";
 })
 export class EmployeeComponent implements OnInit {
 
-  disabled = false;
-  panelOpenState = false;
   addEmployeeForm: FormGroup;
+  projectList : any[];
   submitted = false;
-  startDate = new Date();
-  endDate = new Date();
-  skillNames: Skill[];
-  paramName:string;
+  skillNames: any[];
+  resp;
 
-  constructor(public fb: FormBuilder, private employeeService: EmployeeServiceService, private activatedRoute: ActivatedRoute, private  route: Router,
-              private location: Location) {
+
+  constructor(public fb: FormBuilder, private employeeService: EmployeeServiceService, private activatedRoute: ActivatedRoute, private router: Router) {
 
     this.reactiveForm();
 
@@ -37,6 +33,7 @@ export class EmployeeComponent implements OnInit {
           primaryWorkLocation: emp.primaryWorkLocation,
           htcExperience: emp.htcExperience,
           overallExperience: emp.overallExperience,
+          primarySkills: emp.primarySkills,
           officialEmailAddr: emp.officialEmailAddr,
           emailAddr: emp.emailAddr,
           extensionNumber: emp.extensionNumber,
@@ -49,10 +46,6 @@ export class EmployeeComponent implements OnInit {
           country: emp.country,
           pincode: emp.pincode
         })
-
-        this.skillsArray().removeAt(0);
-        this.projectsArray().removeAt(0);
-
         emp.skills.forEach(skill => {
           this.skillsArray().push(this.bindSkill(skill));
         })
@@ -66,7 +59,8 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit() {
-
+      this.getProjectList();
+      this.getSkillSetNames();
   }
 
 
@@ -78,26 +72,23 @@ export class EmployeeComponent implements OnInit {
       primaryWorkLocation: ['', Validators.required],
       htcExperience: ['', Validators.required],
       overallExperience: ['', Validators.required],
+      primarySkills: ['', Validators.required],
       personalDetailsId: [''],
       officialEmailAddr: ['', [Validators.required, Validators.email]],
       emailAddr: ['', [Validators.required, Validators.email]],
       extensionNumber: ['', Validators.required],
-      mobileNumber: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      alternativeMobileNumber: [null, [Validators.minLength(10), Validators.maxLength(10)]],
+      mobileNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      alternativeMobileNumber: ['', [Validators.minLength(10), Validators.maxLength(10)]],
       addressId: [''],
       addressLine: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       country: ['', Validators.required],
       pincode: [null, [Validators.required, Validators.maxLength(6), Validators.minLength(6)]],
-      skills: this.fb.array([this.newSkill()]),
-      projects: this.fb.array([this.newProject()]),
-      skillId: [null]
-
-
+      skills: this.fb.array([]),
+      projects: this.fb.array([])
     })
   }
-
 
   get fval() {
     return this.addEmployeeForm.controls;
@@ -139,31 +130,26 @@ export class EmployeeComponent implements OnInit {
 
   newProject(): FormGroup {
     return this.fb.group({
+      employeeProjectId: [''],
       projectId: [''],
       projectName: [''],
       reportingTo: [''],
-   //   deliveryHead: [''],
-      projectLocation: [''],
+      location: [''],
       startDate: [''],
       endDate: [''],
       active: ['']
-   //   skillSet: [''],
-    //  projectDescription: ['']
     })
   }
 
   bindProject(project): FormGroup {
     return this.fb.group({
+      employeeProjectId: [project.employeeProjectId],
       projectId: [project.projectId],
-      projectName: [project.projectName],
       reportingTo: [project.reportingTo],
-   //   deliveryHead: [project.deliveryHead],
-      projectLocation: [project.projectLocation],
+      location: [project.location],
       startDate: [project.startDate],
       endDate: [project.endDate],
       active: [project.active]
-     // skillSet: [project.skillSet],
-     // projectDescription: [project.projectDescription]
     })
   }
 
@@ -176,34 +162,24 @@ export class EmployeeComponent implements OnInit {
   }
 
   onSubmit(addEmployee) {
+    this.resp = '';
     this.submitted = true;
-    if (this.addEmployeeForm.invalid) {
-      this.addEmployeeForm.reset();
+    if(this.addEmployeeForm.invalid) {
       return;
     }
     this.employeeService.addEmployee(this.addEmployeeForm.value)
-        .pipe(this.filterEmptyFields)
-        .subscribe(data => {
-          console.log(data);
+        .subscribe(resp => {
+          if(resp.status === true){
+            alert(resp.message);
 
+          }
+          else{
+            alert(resp.message)
+          }
         });
-    alert("Saved Successfully");
-    //this.addEmployeeForm;
-    addEmployee.reset();
-  }
-  filterEmptyFields(data: any): any {    // Filter any fields that aren't empty & store in a new object - To be passed on the Pipe map's caller
-    let fields = {};
-    Object.keys(data).forEach(key =>  data[key] != '' ? fields[key] = data[key] : key);
+    this.router.navigateByUrl("employeeDetails");
 
-    return fields;
   }
-/*
-  trackEmptyFields(): void {
-    this.form
-        .valueChanges
-        .pipe(map(this.filterEmptyFields))
-        .subscribe(fields => console.log(fields));
-  }*/
 
   countrySelect(event) {
     this.addEmployeeForm.patchValue({
@@ -211,11 +187,17 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
+    getProjectList() {
+        this.employeeService.getProjectList().subscribe(data => {
+            this.projectList = data;
+        });
+    }
+
   getSkillSetNames() : void{
 
-    this.employeeService.getSkillNames(this.paramName).subscribe(data =>{
-        //this.skillNames = data;
-    } );
+    this.employeeService.getSkillNames().subscribe(data =>{
+        this.skillNames = data;
+    });
   }
 }
 
