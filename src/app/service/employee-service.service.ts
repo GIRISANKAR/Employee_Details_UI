@@ -9,7 +9,7 @@ import {HttpParams} from "@angular/common/http";
   providedIn: 'root'
 })
 export class EmployeeServiceService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8081';
 
 
   paramName="skills";
@@ -20,7 +20,15 @@ export class EmployeeServiceService {
     return this.http.post(this.baseUrl + "/addEmployee/", employee,
       {responseType: 'json'});
   }
+  addProject(project): Observable<any> {
+    return this.http.post(this.baseUrl + "/addProject/", project,
+        {responseType: 'json'});
+  }
 
+  addSkill(skillName): Observable<any> {
+    let params = new HttpParams().set('systemParameterRequest',skillName);
+    return this.http.post(this.baseUrl + "/addSkill/", params);
+  }
 
   getEmployeeList(): Observable< any > {
     return this.http.get(`${this.baseUrl}/availableEmployeeList`);

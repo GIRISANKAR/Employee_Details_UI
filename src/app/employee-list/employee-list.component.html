@@ -1,29 +1,38 @@
+&nbsp;
 
 <div class="row">
-        <div class="col-md-3">
-            <button mat-raised-button color="primary" routerLink='/employeeDetails'>Add Employee</button>
-        </div>
-        &nbsp;
-        <div class="col-md-3" align="left" width="100">
-            <button mat-raised-button color="primary" (click)="exportExcel()">Export as Excel</button>
-        </div>
-        <div class="col-md-3" align="right">
-            <mat-form-field>
+    &nbsp;
+    <div class="col-md-2">
+        <button mat-raised-button color="primary" routerLink='/employeeDetails'>New Employee</button>
+    </div>
+    <div class="col-md-2" align="left" width="100">
+        <button mat-raised-button color="primary" (click)="showExportFields()">Export as Excel</button>
+    </div>
+
+    <div class="col-md-2">
+        <button mat-raised-button color="primary" routerLink='/project'>New Project/Skill</button>
+    </div>
+    <div>
+        <mat-form-field>
             <input matInput type="text" align="right" (keyup)="doFilter($event.target.value)" placeholder="Search">
-            </mat-form-field>
-        </div>
+        </mat-form-field>
+    </div>
 </div>
+
 &nbsp;
+
 <table mat-table matSort [dataSource]="employeeList" matSort matSortDirection="desc">
     <ng-container matColumnDef="empId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Id
             <div>
                 <mat-form-field fxFlex="40%">
-                    <input matInput type="text" (keyup)="generateTable($event.target.value,'empId')">
+                    <input matInput type="text" (keyup)="filterStartsWith($event.target.value,'empId')">
                 </mat-form-field>
             </div>
         </th>
         <td mat-cell *matCellDef="let employeeList" class="id" (click)="toggleModel(employeeList)"> {{employeeList.empId}}</td>
+
+
     </ng-container>
 
     <ng-container matColumnDef="empName">
@@ -37,18 +46,21 @@
         </th>
         <td mat-cell *matCellDef="let employeeList"> {{employeeList.empName}}</td>
     </ng-container>
-    <ng-container matColumnDef="extensionNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Extension Number</th>
-        <td mat-cell *matCellDef="let employeeList"> {{employeeList.extensionNumber}}</td>
-    </ng-container>
     <ng-container matColumnDef="officialEmailAddr">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Official EmailAddress</th>
         <td mat-cell *matCellDef="let employeeList"> {{employeeList.officialEmailAddr}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="mobileNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile Number</th>
-        <td mat-cell *matCellDef="let employeeList"> {{employeeList.mobileNumber}}</td>
+    <ng-container matColumnDef="primarySkills">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Primary Skills
+            <div>
+                <mat-form-field fxFlex="40%">
+                    <input matInput type="text" (keyup)="filterStartsWith($event.target.value,'primarySkills')"
+                           placeholder=" PrimarySkills Search">
+                </mat-form-field>
+            </div>
+        </th>
+        <td mat-cell *matCellDef="let employeeList"> {{employeeList.primarySkills}}</td>
     </ng-container>
 
     <ng-container matColumnDef="primaryWorkLocation">
@@ -59,7 +71,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Project Name
             <div>
                 <mat-form-field fxFlex="40%">
-                    <input matInput type="text" (keyup)="generateTable($event.target.value,'projectName')"
+                    <input matInput type="text" (keyup)="filterStartsWith($event.target.value,'projectName')"
                            placeholder=" Project Search">
                 </mat-form-field>
             </div>
@@ -70,7 +82,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Overall Experience
             <div>
                 <mat-form-field fxFlex="40%">
-                    <input matInput type="text" (keyup)="generateTable($event.target.value,'overallExperience')"
+                    <input matInput type="text" (keyup)="experienceFilter($event.target.value,'overallExperience')"
                            placeholder=" Experience Search">
                 </mat-form-field>
             </div>
@@ -96,11 +108,11 @@
         </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
+    <tr mat-header-row *matHeaderRowDef="tableHeaders"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableHeaders;"></tr>
 
 </table>
+
 <mat-paginator [length]="100"
                [pageSize]="10"
                [pageSizeOptions]="[5, 10, 25, 100]">
@@ -109,7 +121,6 @@
 <div class="modal" id="delete" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Do you want to delete Employee from list?</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -124,53 +135,85 @@
     </div>
 </div>
 
-<div class="modal" id="myModal" data-backdrop="static" data-keyboard="false">
+<table id="myModal">
+<div *ngIf="employeeDetail.empName">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            {{employeeDetail.empName}}
+        </h4>
+        &nbsp;
+        <h5>
+            Mobile: {{employeeDetail.mobileNumber}} &nbsp;&nbsp;Extn No: {{employeeDetail.extensionNumber}}
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="employeeDetail.projects">
+        <b>Projects</b>
+        <table class="table table-bordered table-striped table-responsive">
+            <tr>
+                <th>ProjectName</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Skill Set</th>
+                <th>Reporting To</th>
+                <th>Project Location</th>
+            </tr>
+            <tbody *ngFor="let project of employeeDetail.projects">
+            <tr>
+                <td>{{project.projectName}}</td>
+                <td>{{project.startDate}}</td>
+                <td>{{project.endDate}}</td>
+                <td>{{project.skillset}}</td>
+                <td>{{project.reportingTo}}</td>
+                <td>{{project.location}}</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <b>Skills</b>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <tr>
+                <th>SkillName</th>
+                <th>Experience</th>
+            </tr>
+
+            <tbody *ngFor="let skill of employeeDetail.skills">
+
+            <tr>
+                <td>{{skill.skillName}}</td>
+                <td>{{skill.experience}}</td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+</table>
+
+<div class="modal" id="exportFields" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
-
-            <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">
-                    {{employeeDetail.empName}}
-                </h4>
+                <b><div class="modal-title">Select the fields to export </div></b>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-
-            <!-- Modal body -->
             <div class="modal-body">
-                <b>Skills</b>
-                <table class="table table-bordered table-striped table-responsive">
-                    <tr>
-                        <th>SkillName</th>
-                        <th>Experience</th>
-                    </tr>
-                    <tbody *ngFor="let skill of employeeDetail.skills">
-                    <tr>
-                        <td>{{skill.skillName}}</td>
-                        <td>{{skill.experience}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <b>Projects</b>
-                <table class="table table-bordered table-striped table-responsive">
-                    <tr>
-                        <th>ProjectName</th>
-                        <th>Reporting To</th>
-                    </tr>
-                    <tbody *ngFor="let project of employeeDetail.projects">
-                    <tr>
-                        <td>{{project.projectName}}</td>
-                        <td>{{project.reportingTo}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <mat-checkbox [(ngModel)]="selectAllColumns" (ngModelChange)="selectAllColumnsToExport()" >SelectAll</mat-checkbox>
+               &nbsp;&nbsp;&nbsp;
+                    <mat-form-field>
+                        <mat-select placeholder="Select Fields" [formControl]="columns" multiple>
+                            <mat-option *ngFor="let column of columnList" [value]="column">{{column}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
             </div>
-
-            <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button (click)="exportExcel()" type="button" class="btn btn-danger" data-dismiss="modal">Export</button>
             </div>
-
         </div>
     </div>
 </div>

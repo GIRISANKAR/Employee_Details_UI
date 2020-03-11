@@ -34,6 +34,7 @@ export class EmployeeComponent implements OnInit {
           htcExperience: emp.htcExperience,
           overallExperience: emp.overallExperience,
           primarySkills: emp.primarySkills,
+          active: emp.active,
           officialEmailAddr: emp.officialEmailAddr,
           emailAddr: emp.emailAddr,
           extensionNumber: emp.extensionNumber,
@@ -51,6 +52,9 @@ export class EmployeeComponent implements OnInit {
         })
         emp.projects.forEach(project => {
           this.projectsArray().push(this.bindProject(project));
+        })
+        emp.trainings.forEach(training => {
+          this.trainingsArray().push(this.bindTraining(training));
         })
 
         this.addEmployeeForm;
@@ -73,6 +77,7 @@ export class EmployeeComponent implements OnInit {
       htcExperience: ['', Validators.required],
       overallExperience: ['', Validators.required],
       primarySkills: ['', Validators.required],
+      active: [''],
       personalDetailsId: [''],
       officialEmailAddr: ['', [Validators.required, Validators.email]],
       emailAddr: ['', [Validators.required, Validators.email]],
@@ -86,7 +91,8 @@ export class EmployeeComponent implements OnInit {
       country: ['', Validators.required],
       pincode: [null, [Validators.required, Validators.maxLength(6), Validators.minLength(6)]],
       skills: this.fb.array([]),
-      projects: this.fb.array([])
+      projects: this.fb.array([]),
+      trainings: this.fb.array([])
     })
   }
 
@@ -134,6 +140,7 @@ export class EmployeeComponent implements OnInit {
       projectId: [''],
       projectName: [''],
       reportingTo: [''],
+      skillset:[''],
       location: [''],
       startDate: [''],
       endDate: [''],
@@ -146,6 +153,7 @@ export class EmployeeComponent implements OnInit {
       employeeProjectId: [project.employeeProjectId],
       projectId: [project.projectId],
       reportingTo: [project.reportingTo],
+      skillset:[project.skillset],
       location: [project.location],
       startDate: [project.startDate],
       endDate: [project.endDate],
@@ -159,6 +167,37 @@ export class EmployeeComponent implements OnInit {
 
   removeProject(i: number) {
     this.projectsArray().removeAt(i);
+  }
+
+  trainingsArray(): FormArray {
+    return this.addEmployeeForm.get('trainings') as FormArray;
+  }
+
+
+  newTraining(): FormGroup {
+    return this.fb.group({
+      trainingId: [''],
+      nameOfTraining: [''],
+      trainingDescription: [''],
+      duration: [''],
+    })
+  }
+
+  bindTraining(training): FormGroup {
+    return this.fb.group({
+      trainingId: [training.trainingId],
+      nameOfTraining: [training.nameOfTraining],
+      trainingDescription: [training.trainingDescription],
+      duration: [training.duration],
+    })
+  }
+
+  addTraining() {
+    this.trainingsArray().push(this.newTraining());
+  }
+
+  removeTraining(i: number) {
+    this.trainingsArray().removeAt(i);
   }
 
   onSubmit(addEmployee) {
@@ -177,7 +216,7 @@ export class EmployeeComponent implements OnInit {
             alert(resp.message)
           }
         });
-    this.router.navigateByUrl("search");
+    this.router.navigateByUrl("/search");
   }
 
   countrySelect(event) {

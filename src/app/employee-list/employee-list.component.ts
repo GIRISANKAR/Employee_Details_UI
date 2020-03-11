@@ -3,6 +3,8 @@ import {EmployeeServiceService} from "../service/employee-service.service";
 import {NavigationExtras, Router} from "@angular/router";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort, MatPaginator} from "@angular/material";
+import * as XLSX from 'xlsx';
+import {FormControl} from "@angular/forms";
 
 
 
@@ -15,16 +17,22 @@ declare var $: any;
 })
 export class EmployeeListComponent implements OnInit {
 
+
     @ViewChild(MatSort, {static: true}) sort: MatSort;
     @ViewChild(MatPaginator, {static: true}) page: MatPaginator;
     @ViewChild('TABLE',{static:true}) table: ElementRef;
     employeeList = new MatTableDataSource<EmployeeListComponent>();
     employeeDetail= new MatTableDataSource<EmployeeListComponent>();
     employeeObject: any[];
-    displayedColumns: string[] = ['empId', 'empName', 'projectName',
-        'overallExperience', 'extensionNumber', 'officialEmailAddr', 'mobileNumber', 'primaryWorkLocation', 'update', 'delete'];
+    tableHeaders: string[] = ['empId', 'empName', 'projectName', 'primarySkills',
+        'overallExperience', 'officialEmailAddr', 'primaryWorkLocation', 'update', 'delete'];
+    columnList: string[] = ['empId', 'empName', 'projectName', 'primarySkills','overallExperience', 'officialEmailAddr',
+        'primaryWorkLocation', 'emailAddr', 'extensionNumber', 'mobileNumber', 'htcExperience', 'addressLine','city', 'state', 'country'];
+    columns = new FormControl();
+    selectAllColumns :boolean;
 
     constructor(private employeeService: EmployeeServiceService, private router: Router) {
+        this.selectAllColumns = false;
     }
 
     doFilter = (value: string) => {
@@ -66,13 +74,12 @@ export class EmployeeListComponent implements OnInit {
         this.getEmployeeList();
         this.employeeList.sort = this.sort;
         this.employeeList.paginator = this.page;
+
     }
 
     generateTable(tableData: string,column) {
        var obj ={id:column,value:tableData}
         this.employeeList.filterPredicate = (data: any, filter: string) => {
-            console.log(data);
-            console.log(filter);
             let matchFound = false;
             let filters = JSON.parse(filter);
 
@@ -84,36 +91,67 @@ export class EmployeeListComponent implements OnInit {
         this.employeeList.filter=JSON.stringify(obj);
     }
 
-/*
+    filterStartsWith(tableData: string,column) {
+        var obj ={id:column,value:tableData}
+        this.employeeList.filterPredicate = (data: any, filter: string) => {
+            let matchFound = false;
+            let filters = JSON.parse(filter);
+            if (data[filters.id]) {
+                matchFound = (matchFound || data[filters.id].toString().trim().toLowerCase().startsWith(filters.value.trim().toLowerCase()))
+            }
+            return matchFound;
+        }
+        this.employeeList.filter=JSON.stringify(obj);
+    }
+
+    experienceFilter(tableData: string,column) {
+        var obj ={id:column,value:tableData}
+        this.employeeList.filterPredicate = (data: any, filter: string) => {
+
+            let matchFound = false;
+            let filters = JSON.parse(filter);
+
+            if (data[filters.id]) {
+                matchFound = (matchFound || data[filters.id]>=(filters.value))
+            }
+            return matchFound;
+        }
+        this.employeeList.filter=JSON.stringify(obj);
+    }
+
     exportExcel() {
-        let index: number;
-        /!*const workSheet = Xlsx.utils.json_to_sheet(this.employeeList.filteredData);
+        let empArray =[];
+        this.employeeList.filteredData.forEach(filteredEmployee => {
+            empArray.push(this.getRequiredFields(filteredEmployee));
+        })
+        const workSheet = XLSX.utils.json_to_sheet(empArray);
         const workBook: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workBook, workSheet, 'SheetName');
-        XLSX.writeFile(workBook, 'filename.xlsx');*!/
-    }*/
-   /* exportToExcel() {
-        let dataToExport = this.employeeList.filteredData
-            .map(x => ({
-                DisplayName: x.DisplayName,
-                Name: x.Name,
-                Type: x.Type == '0' ? 'Partial' : 'Full'
-            }));
+        XLSX.writeFile(workBook, 'filename.xlsx');
+    }
 
-        let workSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport, <XLSX.Table2SheetOpts>{ sheet: 'Sheet 1' });
-        let workBook: XLSX.WorkBook = XLSX.utils.book_new();
+    getRequiredFields(filteredEmployee){
+        let columnArray=[];
+        let json = {};
+        this.columns.value.forEach(selectedColumns => {
+           json[selectedColumns] = filteredEmployee[selectedColumns];
+        })
+        return json;
+    }
 
-        // Adjust column width
-        var wscols = [
-            { wch: 50 },
-            { wch: 50 },
-            { wch: 30 }
-        ];
+    showExportFields(){
+        $("#exportFields").modal("show")
+    }
 
-        workSheet["!cols"] = wscols;
-
-        XLSX.utils.book_append_sheet(workBook, workSheet, 'Sheet 1');
-        XLSX.writeFile(workBook, `${this.exportToExcelFileName}.xlsx`);
-    }*/
+    selectAllColumnsToExport() {
+        console.log('call',[this.selectAllColumns,this.columns]);
+        if  (this.selectAllColumns === false) {
+            this.columns = new FormControl();
+            return;
+        }else if (this.selectAllColumns === true) {
+            this.columns = new FormControl();
+            this.columns.setValue(this.columnList);
+        }
+    }
 }
 

@@ -1,8 +1,7 @@
 
 <form [formGroup]="addEmployeeForm" #addEmployee (ngSubmit)="onSubmit(addEmployee)">
     <mat-accordion class="example-headers-align">
-        <mat-expansion-panel (opened)="panelOpenState = true"
-                             (closed)="panelOpenState = false">
+        <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Employee Details
@@ -11,9 +10,7 @@
             </mat-expansion-panel-header>
 
             <mat-form-field>
-                <input matInput placeholder="Employee Id " class="form-control" formControlName="empId" required >
-
-
+                <input matInput placeholder="Employee Id " class="form-control" formControlName="empId"required>
                 <div *ngIf="fval.empId.invalid && (fval.empId.dirty || fval.empId.touched)" class="alert alert-danger">
 
                     <div *ngIf="fval.empId.errors.required">
@@ -23,6 +20,7 @@
                         Employee Id must be an number.
                     </div>
                 </div>
+
             </mat-form-field>
             &nbsp;
             <mat-form-field>
@@ -51,8 +49,8 @@
                     <mat-select matNativeControl required formControlName="primaryWorkLocation" class="form-control">
                         <mat-option value="Mepz">Mepz</mat-option>
                         <mat-option value="Guindy">Guindy</mat-option>
-                        <mat-option value="HTCHyderabad"> HTCHyderabad</mat-option>
-                        <mat-option value="Ciber">Ciber</mat-option>
+                        <mat-option value="Hyderabad"> Hyderabad</mat-option>
+                        <mat-option value="Bangalore">Bangalore</mat-option>
                     </mat-select>
                     <div *ngIf="fval.primaryWorkLocation.invalid && (fval.primaryWorkLocation.dirty || fval.primaryWorkLocation.touched)" class="alert alert-danger">
                         <div *ngIf="fval.primaryWorkLocation.errors.required">
@@ -248,7 +246,7 @@
                         &nbsp;
                         <mat-form-field>
                             <mat-label>End date</mat-label>
-                            <input type="date" matInput  formControlName="endDate" required class="form-control"/>
+                            <input type="date" matInput  formControlName="endDate" class="form-control"/>
                         </mat-form-field>
                         &nbsp;
                         <mat-form-field>
@@ -268,7 +266,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" (click)="addProject()">Add Project</button>
+            <button type="button" (click)="addProject()">Assign Project</button>
         </mat-expansion-panel>
         <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
@@ -297,6 +295,38 @@
                     </div>
                 </div>
                 <button type="button" (click)="addSkill()">Add Skill</button>
+            </mat-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Training Details
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+                <div formArrayName="trainings">
+                    <div *ngFor="let training of trainingsArray().controls; let i=index">
+                        <div [formGroupName]="i">
+                            <mat-form-field>
+                                <mat-label>Training Name</mat-label>
+                                <input matInput required formControlName="nameOfTraining" class="form-control"/>
+                            </mat-form-field>
+                            &nbsp;
+                            <mat-form-field>
+                                <mat-label>Description</mat-label>
+                                <input matInput required formControlName="trainingDescription" class="form-control"/>
+                            </mat-form-field>
+                            &nbsp; &nbsp;
+                            <mat-form-field>
+                                <mat-label>Duration</mat-label>
+                                <input matInput required formControlName="duration" class="form-control"/>
+                            </mat-form-field>
+                            &nbsp; &nbsp;
+                            <button (click)="removeTraining(i)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" (click)="addTraining()">Add Training Experience</button>
             </mat-list>
         </mat-expansion-panel>
         <mat-action-row>

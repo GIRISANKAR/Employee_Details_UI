@@ -21,7 +21,7 @@ import {
     MatToolbarModule,
     MatCheckboxModule,
     MatTableModule,
-    MatPaginatorModule, MatCardModule, MatSpinner, MatButtonModule, MatSort,
+    MatPaginatorModule, MatCardModule, MatSpinner, MatButtonModule, MatSort, MAT_CHECKBOX_CLICK_ACTION,
 } from "@angular/material";
 import {HttpClientModule} from "@angular/common/http";
 import {HomeComponent} from './home/home.component';
@@ -31,7 +31,7 @@ import {MatSelectCountryModule} from '@angular-material-extensions/select-countr
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {LoginComponent} from './login/login.component';
 import {AdminComponent} from './admin/admin.component';
-
+import { ProjectComponent } from './project/project.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +42,8 @@ import {AdminComponent} from './admin/admin.component';
         LoginComponent,
         AdminComponent,
         MatSpinner,
-        MatSort
+        MatSort,
+        ProjectComponent
     ],
     imports: [
         BrowserModule,
@@ -77,7 +78,7 @@ import {AdminComponent} from './admin/admin.component';
         MatButtonModule,
 
     ],
-    providers: [],
+    providers: [{provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}],
     bootstrap: [AppComponent]
 })
 export class AppModule {

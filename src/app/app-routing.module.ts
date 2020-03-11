@@ -6,14 +6,17 @@ import {EmployeeListComponent} from "./employee-list/employee-list.component";
 import {LoginComponent} from "./login/login.component";
 import {AdminComponent} from "./admin/admin.component";
 import {AuthGuard} from "./authentication/auth.guard";
+import {ProjectComponent} from "./project/project.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/search', pathMatch: 'full' },
+ /* {path : '', component : LoginComponent},*/
   {path:'home', component: HomeComponent},
   { path: 'employeeDetails', component: EmployeeComponent},
   {path: 'search', component: EmployeeListComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'admin', component: AdminComponent,canActivate: [AuthGuard] }
+  { path: 'admin', component: AdminComponent,canActivate: [AuthGuard] },
+  {path: 'project', component: ProjectComponent},
 ];
 
 @NgModule({
